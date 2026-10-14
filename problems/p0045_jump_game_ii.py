@@ -35,7 +35,13 @@ class Solution(problem.Problem):
         Returns:
             The minimum number of jumps needed to reach index len(nums) - 1.
         """
-        raise NotImplementedError  # your solution
+        jumps = end = far = 0
+        for i in range(len(nums) - 1):
+            far = max(far, i + nums[i])
+            if i == end:
+                jumps += 1
+                end = far
+        return jumps
 
 
 # Examples from the problem statement: `uv run main.py 45`
@@ -55,9 +61,7 @@ CASES = [
     pytest.param([1, 2, 1, 1, 1], 3, id="short_hops_at_end"),
     pytest.param([2, 0, 2, 0, 1], 2, id="land_exactly_past_zeros"),
     pytest.param([3, 4, 3, 1, 0, 7, 0, 0, 0, 0], 3, id="longest_first_jump_is_a_trap"),
-    pytest.param(
-        [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 0], 2, id="one_short_then_one_more"
-    ),
+    pytest.param([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 0], 2, id="one_short_then_one_more"),
     pytest.param([1000, 0, 0, 0, 0, 0], 1, id="jump_length_upper_bound"),
     pytest.param([1] * 10000, 9999, id="maximum_size_all_ones"),
     pytest.param([2] * 10000, 5000, id="maximum_size_all_twos"),

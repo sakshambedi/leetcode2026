@@ -34,7 +34,14 @@ class Solution(problem.Problem):
         Returns:
             The minimum total, with every child getting at least one candy.
         """
-        raise NotImplementedError  # your solution
+        candies = [1] * len(ratings)
+        for i in range(1, len(ratings)):
+            if ratings[i] > ratings[i - 1]:
+                candies[i] = candies[i - 1] + 1
+        for i in range(len(ratings) - 2, -1, -1):
+            if ratings[i] > ratings[i + 1]:
+                candies[i] = max(candies[i], candies[i + 1] + 1)
+        return sum(candies)
 
 
 # Examples from the problem statement: `uv run main.py 135`
@@ -59,9 +66,7 @@ CASES = [
     pytest.param([1, 2, 87, 87, 87, 2, 1], 13, id="plateau_between_slopes"),
     pytest.param([0, 50000, 0], 4, id="value_bounds"),
     pytest.param([0] * 50000, 50000, id="maximum_size_all_equal"),
-    pytest.param(
-        list(range(50000, 0, -1)), 1250025000, id="maximum_size_strictly_decreasing"
-    ),
+    pytest.param(list(range(50000, 0, -1)), 1250025000, id="maximum_size_strictly_decreasing"),
 ]
 
 

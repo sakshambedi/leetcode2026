@@ -79,7 +79,7 @@
 <main>
 	<header>
 		<nav class="bar">
-			<a href={resolve('/')}>← All<span class="wide"> problems</span></a>
+			<a href={resolve('/')}>← All<span class="wide">{' '}problems</span></a>
 			<ThemeSwitch />
 		</nav>
 		<div class="meta">

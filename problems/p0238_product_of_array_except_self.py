@@ -36,7 +36,13 @@ class Solution(problem.Problem):
         Returns:
             answer, where answer[i] is the product of all of nums except nums[i].
         """
-        raise NotImplementedError  # your solution
+        answer, prefix = [1] * len(nums), 1
+        for i, value in enumerate(nums):
+            answer[i], prefix = prefix, prefix * value
+        suffix = 1
+        for i in range(len(nums) - 1, -1, -1):
+            answer[i], suffix = answer[i] * suffix, suffix * nums[i]
+        return answer
 
 
 # Examples from the problem statement: `uv run main.py 238`

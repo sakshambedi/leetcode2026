@@ -36,7 +36,12 @@ class Solution(problem.Problem):
             The smallest index i with haystack[i : i + len(needle)] == needle,
             or -1 if needle does not occur.
         """
-        raise NotImplementedError  # your solution
+        if not needle:
+            return 0
+        for start in range(len(haystack) - len(needle) + 1):
+            if all(haystack[start + i] == char for i, char in enumerate(needle)):
+                return start
+        return -1
 
 
 # Examples from the problem statement: `uv run main.py 28`

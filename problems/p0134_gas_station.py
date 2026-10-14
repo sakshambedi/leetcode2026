@@ -36,7 +36,14 @@ class Solution(problem.Problem):
         Returns:
             The unique starting index that completes the circuit, or -1 if none does.
         """
-        raise NotImplementedError  # your solution
+        if sum(gas) < sum(cost):
+            return -1
+        start = tank = 0
+        for i, (available, needed) in enumerate(zip(gas, cost, strict=True)):
+            tank += available - needed
+            if tank < 0:
+                start, tank = i + 1, 0
+        return start
 
 
 # Examples from the problem statement: `uv run main.py 134`

@@ -34,7 +34,11 @@ class Solution(problem.Problem):
         Returns:
             The integer value of ``s``.
         """
-        raise NotImplementedError  # your solution
+        values = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+        return sum(
+            -values[c] if i + 1 < len(s) and values[c] < values[s[i + 1]] else values[c]
+            for i, c in enumerate(s)
+        )
 
 
 # Examples from the problem statement: `uv run main.py 13`

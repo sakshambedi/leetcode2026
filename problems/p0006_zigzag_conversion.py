@@ -35,7 +35,18 @@ class Solution(problem.Problem):
         Returns:
             The characters of s read row by row from the zigzag.
         """
-        raise NotImplementedError  # your solution
+        if numRows == 1 or numRows >= len(s):
+            return s
+        rows = [[] for _ in range(numRows)]
+        row, step = 0, 1
+        for char in s:
+            rows[row].append(char)
+            if row == 0:
+                step = 1
+            elif row == numRows - 1:
+                step = -1
+            row += step
+        return "".join("".join(chars) for chars in rows)
 
 
 # Examples from the problem statement: `uv run main.py 6`
@@ -59,9 +70,7 @@ CASES = [
     pytest.param("a,b.C", 2, "abC,.", id="punctuation_chars"),
     pytest.param("AAAAAA", 3, "AAAAAA", id="all_same_char"),
     pytest.param("ab" * 499 + "a", 1, "ab" * 499 + "a", id="near_maximum_one_row"),
-    pytest.param(
-        "ab" * 499 + "a", 2, "a" * 500 + "b" * 499, id="near_maximum_two_rows"
-    ),
+    pytest.param("ab" * 499 + "a", 2, "a" * 500 + "b" * 499, id="near_maximum_two_rows"),
     pytest.param("xy" * 500, 1000, "xy" * 500, id="maximum_length_and_rows"),
 ]
 

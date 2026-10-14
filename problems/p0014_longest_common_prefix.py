@@ -34,7 +34,12 @@ class Solution(problem.Problem):
         Returns:
             The longest common prefix, or "" when the strings share none.
         """
-        raise NotImplementedError  # your solution
+        if not strs:
+            return ""
+        for i, char in enumerate(strs[0]):
+            if any(i >= len(word) or word[i] != char for word in strs[1:]):
+                return strs[0][:i]
+        return strs[0]
 
 
 # Examples from the problem statement: `uv run main.py 14`
@@ -54,9 +59,7 @@ CASES = [
     pytest.param(["abcd", "abc", "ab"], "ab", id="shortest_string_last"),
     pytest.param(["a", "b"], "", id="differ_at_first_character"),
     pytest.param(["prefix", "prefixes"], "prefix", id="whole_word_is_prefix"),
-    pytest.param(
-        ["interspecies", "interstellar", "interstate"], "inters", id="long_shared_run"
-    ),
+    pytest.param(["interspecies", "interstellar", "interstate"], "inters", id="long_shared_run"),
     pytest.param(["reflower", "flow", "flight"], "", id="match_only_off_the_start"),
     pytest.param(["cir", "car"], "c", id="differ_in_the_middle"),
     pytest.param(["a" * 200] * 200, "a" * 200, id="maximum_size_all_equal"),

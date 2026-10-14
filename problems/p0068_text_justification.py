@@ -37,7 +37,25 @@ class Solution(problem.Problem):
             The lines in order. Spaces are spread evenly between words, extra ones going
             to the left gaps; the last line and one-word lines are left-justified.
         """
-        raise NotImplementedError  # your solution
+        lines, current, letters = [], [], 0
+        for word in words:
+            if current and letters + len(word) + len(current) > maxWidth:
+                lines.append((current, letters))
+                current, letters = [], 0
+            current.append(word)
+            letters += len(word)
+        lines.append((current, letters))
+        result = []
+        for index, (line, letters) in enumerate(lines):
+            if index == len(lines) - 1 or len(line) == 1:
+                result.append(" ".join(line).ljust(maxWidth))
+                continue
+            gaps, extra = divmod(maxWidth - letters, len(line) - 1)
+            result.append(
+                "".join(word + " " * (gaps + (slot < extra)) for slot, word in enumerate(line[:-1]))
+                + line[-1]
+            )
+        return result
 
 
 # Examples from the problem statement: `uv run main.py 68`
@@ -94,30 +112,22 @@ CASES = [
     pytest.param(["a"], 5, ["a    "], id="single_word_padded_right"),
     pytest.param(["a", "b", "c"], 1, ["a", "b", "c"], id="width_one_word_per_line"),
     pytest.param(["a", "b", "c"], 10, ["a b c     "], id="everything_on_last_line"),
-    pytest.param(
-        ["ab", "cd", "ef"], 5, ["ab cd", "ef   "], id="exact_fit_single_spaces"
-    ),
-    pytest.param(
-        ["aa", "b", "c", "dddd"], 7, ["aa  b c", "dddd   "], id="extra_space_goes_left"
-    ),
+    pytest.param(["ab", "cd", "ef"], 5, ["ab cd", "ef   "], id="exact_fit_single_spaces"),
+    pytest.param(["aa", "b", "c", "dddd"], 7, ["aa  b c", "dddd   "], id="extra_space_goes_left"),
     pytest.param(
         ["a", "b", "c", "d", "e"],
         8,
         ["a  b c d", "e       "],
         id="three_gaps_one_extra",
     ),
-    pytest.param(
-        ["ab", "cd", "ef", "gh"], 6, ["ab  cd", "ef gh "], id="last_line_not_stretched"
-    ),
+    pytest.param(["ab", "cd", "ef", "gh"], 6, ["ab  cd", "ef gh "], id="last_line_not_stretched"),
     pytest.param(
         ["a", "verylongword", "b"],
         12,
         ["a           ", "verylongword", "b           "],
         id="one_word_middle_line_left_justified",
     ),
-    pytest.param(
-        ["Hi,", "you!", "ok."], 10, ["Hi,   you!", "ok.       "], id="symbols"
-    ),
+    pytest.param(["Hi,", "you!", "ok."], 10, ["Hi,   you!", "ok.       "], id="symbols"),
     pytest.param([_W20, _W20], 20, [_W20, _W20], id="words_of_maximum_length"),
     pytest.param(
         ["x"] * 300,

@@ -34,7 +34,17 @@ class Solution(problem.Problem):
         Returns:
             The total units of water held between the bars.
         """
-        raise NotImplementedError  # your solution
+        left, right, left_max, right_max, water = 0, len(height) - 1, 0, 0, 0
+        while left < right:
+            if height[left] <= height[right]:
+                left_max = max(left_max, height[left])
+                water += left_max - height[left]
+                left += 1
+            else:
+                right_max = max(right_max, height[right])
+                water += right_max - height[right]
+                right -= 1
+        return water
 
 
 # Examples from the problem statement: `uv run main.py 42`
@@ -59,9 +69,7 @@ CASES = [
     pytest.param([0, 4, 0, 1, 0, 2, 0], 5, id="walls_off_the_ends"),
     pytest.param([100000, 0, 100000], 100000, id="value_bounds"),
     pytest.param([1, 0] * 10000, 9999, id="maximum_size_alternating"),
-    pytest.param(
-        [100000] + [0] * 19998 + [100000], 1999800000, id="maximum_size_one_wide_pool"
-    ),
+    pytest.param([100000] + [0] * 19998 + [100000], 1999800000, id="maximum_size_one_wide_pool"),
 ]
 
 
