@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Design · array + hash map',
 	lede: 'Keep the values packed in an array for a uniform random pick, a map from value to slot for O(1) lookup, and remove by moving the last value into the hole.'
 };
 

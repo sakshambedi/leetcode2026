@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 122
     title = "Best Time to Buy and Sell Stock II"
     url = "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/"
+    difficulty = "Medium"
+    pattern = "Greedy · sum of positive differences"
     viz = "viz/src/routes/122/+page.svelte"
 
     def solve(self, prices: list[int]) -> int:

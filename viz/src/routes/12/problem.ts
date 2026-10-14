@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Greedy · fixed table',
 	lede: 'Put the six subtractive forms in the table with the seven symbols, then keep appending the biggest pair that still fits in num.'
 };
 

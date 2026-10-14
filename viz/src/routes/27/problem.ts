@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Two pointers · in place',
 	lede: "Read every value with i and copy each one that isn't val down to the write head k; the first k slots are the answer."
 };
 

@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 135
     title = "Candy"
     url = "https://leetcode.com/problems/candy/"
+    difficulty = "Hard"
+    pattern = "Greedy · two passes"
     viz = "viz/src/routes/135/+page.svelte"
 
     def solve(self, ratings: list[int]) -> int:

@@ -19,6 +19,8 @@ class Solution(problem.Problem):
     number = 238
     title = "Product of Array Except Self"
     url = "https://leetcode.com/problems/product-of-array-except-self/"
+    difficulty = "Medium"
+    pattern = "Prefix and suffix products · two passes"
     viz = "viz/src/routes/238/+page.svelte"
 
     def solve(self, nums: list[int]) -> list[int]:

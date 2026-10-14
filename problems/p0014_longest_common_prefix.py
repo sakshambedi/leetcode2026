@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 14
     title = "Longest Common Prefix"
     url = "https://leetcode.com/problems/longest-common-prefix/"
+    difficulty = "Easy"
+    pattern = "Vertical scanning · column by column"
     viz = "viz/src/routes/14/+page.svelte"
 
     def solve(self, strs: list[str]) -> str:

@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Greedy · farthest reach',
 	lede: 'Walk forward while i stays within reach, stretching reach to i + nums[i]; you win once reach covers the last index, and lose if i ever steps past it.'
 };
 

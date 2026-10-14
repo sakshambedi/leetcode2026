@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Single scan · one-symbol lookahead',
 	lede: 'Add each symbol, except subtract it when the symbol after it is bigger: the I in IV, the C in CM.'
 };
 

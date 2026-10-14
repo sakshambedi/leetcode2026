@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 151
     title = "Reverse Words in a String"
     url = "https://leetcode.com/problems/reverse-words-in-a-string/"
+    difficulty = "Medium"
+    pattern = "Two pointers · right-to-left word scan"
     viz = "viz/src/routes/151/+page.svelte"
 
     def solve(self, s: str) -> str:

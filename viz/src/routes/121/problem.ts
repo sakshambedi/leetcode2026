@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'One pass · running minimum',
 	lede: 'The best sale on day i buys at the cheapest day before it, so walk once keeping that cheapest day and the best gap.'
 };
 

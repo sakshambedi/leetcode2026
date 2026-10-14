@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Simulation · row buckets',
 	lede: 'Walk s once, appending each char to the current row; the row index bounces off the top and bottom, then the rows are read out in order.'
 };
 

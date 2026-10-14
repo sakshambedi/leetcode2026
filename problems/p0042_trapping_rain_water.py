@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 42
     title = "Trapping Rain Water"
     url = "https://leetcode.com/problems/trapping-rain-water/"
+    difficulty = "Hard"
+    pattern = "Two pointers · running max from each end"
     viz = "viz/src/routes/42/+page.svelte"
 
     def solve(self, height: list[int]) -> int:

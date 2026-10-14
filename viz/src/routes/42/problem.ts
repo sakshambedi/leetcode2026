@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Hard',
-	pattern: 'Two pointers · running max from each end',
 	lede: 'Water over a bar is the lower of the two tallest walls around it, minus the bar; always move the lower side, because its max is already the limit.'
 };
 

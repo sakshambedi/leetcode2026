@@ -6,7 +6,10 @@ uv run main.py 88 --viz        open the visualization (starts the viz dev server
 uv run main.py viz             open the visualization index
 uv run main.py viz serve       export cases and start the dev server without opening a browser
 uv run main.py viz stop        stop the viz dev server
-uv run main.py list            list every problem with its viz
+uv run main.py list            list every problem with its section, difficulty and pattern
+uv run main.py list -d easy -p "two pointers" -s "sliding window"
+                               filter by difficulty, pattern and study-plan section; with -s,
+                               the section's problems not added yet are listed too
 uv run main.py new 1 Two Sum   scaffold problems/p0001_two_sum.py + viz/src/routes/1/
 uv run main.py new <url>       same, with number, title, difficulty and signature from LeetCode
 """
@@ -36,6 +39,8 @@ VIZ = ROOT / "viz"  # SvelteKit app
 ROUTES = VIZ / "src" / "routes"
 GENERATED = VIZ / "src" / "lib" / "generated"
 TEMPLATES = ROOT / "templates"
+# Sections come from this plan; refresh with: uv run leetcode.py plan top-interview-150 > <file>
+STUDYPLAN = ROOT / "studyplans" / "top-interview-150.json"
 PORT = 5274
 PIDFILE = VIZ / ".dev.pid"
 
@@ -45,9 +50,7 @@ GREEN, RED, DIM, BOLD, RESET = "\033[32m", "\033[31m", "\033[2m", "\033[1m", "\0
 def find(number: int) -> Path:
     matches = sorted(PROBLEMS.glob(f"p{number:04d}_*.py"))
     if not matches:
-        sys.exit(
-            f"No problem {number}. Create it with: uv run main.py new {number} <title>"
-        )
+        sys.exit(f"No problem {number}. Create it with: uv run main.py new {number} <title>")
     return matches[0]
 
 
@@ -59,9 +62,7 @@ def run_examples(module: ModuleType) -> bool:
     solution: problem.Problem = module.Solution()
     params = inspect.signature(solution.solve).parameters.values()
     names = [p.name for p in params if p.kind is p.POSITIONAL_OR_KEYWORD]
-    print(
-        f"{BOLD}{solution.number}. {solution.title}{RESET}  {DIM}{solution.url}{RESET}\n"
-    )
+    print(f"{BOLD}{solution.number}. {solution.title}{RESET}  {DIM}{solution.url}{RESET}\n")
 
     if not module.EXAMPLES:
         print(
@@ -108,6 +109,15 @@ def route(number: int) -> Path:
     return ROUTES / str(number) / "+page.svelte"
 
 
+def load_plan() -> dict:
+    return json.loads(STUDYPLAN.read_text())
+
+
+def sections(plan: dict) -> dict[int, str]:
+    """Problem number -> its section in the study plan."""
+    return {q["number"]: sec["name"] for sec in plan["sections"] for q in sec["problems"]}
+
+
 def export_cases(module: ModuleType) -> list[dict]:
     """EXAMPLES + CASES in the shape the viz test-case picker and its tests read."""
     cases = [
@@ -115,9 +125,7 @@ def export_cases(module: ModuleType) -> list[dict]:
         for i, ex in enumerate(module.EXAMPLES, 1)
     ]
     for param in getattr(module, "CASES", []):
-        *args, expected = (
-            param.values
-        )  # convention: the last value is the expected answer
+        *args, expected = param.values  # convention: the last value is the expected answer
         cases.append({"id": param.id, "args": args, "expected": expected})
     return cases
 
@@ -126,9 +134,9 @@ def export_all() -> None:
     """Write problems.json and cases/<stem>.json into the viz app from every problem file."""
     (GENERATED / "cases").mkdir(parents=True, exist_ok=True)
     index = GENERATED / "problems.json"
-    previous = (
-        {p["stem"]: p for p in json.loads(index.read_text())} if index.exists() else {}
-    )
+    previous = {p["stem"]: p for p in json.loads(index.read_text())} if index.exists() else {}
+    plan = load_plan()
+    section_of = sections(plan)
     problems = []
     for path in sorted(PROBLEMS.glob("p[0-9]*.py")):
         try:
@@ -148,12 +156,16 @@ def export_all() -> None:
                 "title": cls.title,
                 "url": cls.url,
                 "stem": path.stem,
+                "difficulty": cls.difficulty,
+                "pattern": cls.pattern,
+                "section": section_of.get(cls.number),
             }
         )
         (GENERATED / "cases" / f"{path.stem}.json").write_text(
             json.dumps(export_cases(module)) + "\n"
         )
     index.write_text(json.dumps(problems, indent=2) + "\n")
+    (GENERATED / "studyplan.json").write_text(json.dumps(plan, indent=2) + "\n")
 
 
 def server_up() -> bool:
@@ -214,11 +226,49 @@ def open_viz(number: int | None = None) -> None:
     print(f"Opened {url}")
 
 
-def list_problems() -> None:
-    for path in sorted(PROBLEMS.glob("p[0-9]*.py")):
-        cls = load(path).Solution
-        viz = route(cls.number).relative_to(ROOT) if route(cls.number).exists() else "-"
-        print(f"{cls.number:>5}  {cls.title:<40} {DIM}{viz}{RESET}")
+def list_problems(
+    difficulty: str | None = None, pattern: str | None = None, section: str | None = None
+) -> None:
+    """Print problems, filtered by case-insensitive matches on difficulty, pattern and section.
+
+    Args:
+        difficulty: ``easy``, ``medium`` or ``hard``.
+        pattern: Any part of the pattern label, e.g. ``two pointers`` or ``greedy``.
+        section: Any part of a study-plan section name, e.g. ``sliding``. Lists those sections
+            in plan order, including problems not added yet.
+    """
+    plan = load_plan()
+    section_of = sections(plan)
+    added = {cls.number: cls for cls in (load(p).Solution for p in PROBLEMS.glob("p[0-9]*.py"))}
+
+    order = sorted(added)
+    if section is not None:
+        picked = [s for s in plan["sections"] if section.lower() in s["name"].lower()]
+        if not picked:
+            names = ", ".join(s["name"] for s in plan["sections"])
+            sys.exit(f"No section matches {section!r}. Sections: {names}")
+        order = [q["number"] for s in picked for q in s["problems"]]
+    titles = {q["number"]: q for s in plan["sections"] for q in s["problems"]}
+
+    shown = 0
+    for number in order:
+        cls = added.get(number)
+        diff = cls.difficulty if cls else titles[number]["difficulty"]
+        if difficulty and diff.lower() != difficulty.lower():
+            continue
+        if pattern and (not cls or pattern.lower() not in cls.pattern.lower()):
+            continue
+        shown += 1
+        sec = section_of.get(number, "-")
+        title = cls.title if cls else titles[number]["title"]
+        title = title if len(title) <= 44 else title[:43] + "…"
+        if cls is None:
+            print(f"{DIM}{number:>5}  {title:<44} {diff:<7} {sec:<16} not added yet{RESET}")
+            continue
+        viz = "" if route(number).exists() else f"  {DIM}(no viz){RESET}"
+        print(f"{number:>5}  {title:<44} {diff:<7} {sec:<16} {DIM}{cls.pattern}{RESET}{viz}")
+    if not shown:
+        print("No problems match.")
 
 
 STUB = """    def solve(self, *args):
@@ -238,9 +288,7 @@ def modern_types(annotation: str) -> str:
         annotation = annotation.replace(old, new)
     # Optional[X] -> X | None, innermost first so nested Optionals unwrap too.
     while m := re.search(r"Optional\[([^\[\]]*(?:\[[^\[\]]*\])?)\]", annotation):
-        annotation = (
-            annotation[: m.start()] + f"{m.group(1)} | None" + annotation[m.end() :]
-        )
+        annotation = annotation[: m.start()] + f"{m.group(1)} | None" + annotation[m.end() :]
     return annotation
 
 
@@ -255,9 +303,7 @@ def methods_from(starter: str) -> str:
         docstring skeleton so editor hovers show the parameters and return value.
     """
     # Tree and list starters open with a commented-out node class; skip it and read class Solution.
-    code = "\n".join(
-        line for line in starter.splitlines() if not line.lstrip().startswith("#")
-    )
+    code = "\n".join(line for line in starter.splitlines() if not line.lstrip().startswith("#"))
     code = code[code.find("class Solution") :]
     m = re.search(r"def (\w+)\(self(?:, ([^)]*))?\)(\s*->\s*[^:]+)?:", code)
     if not m:
@@ -335,16 +381,21 @@ def main() -> int:
         nargs="*",
         help="for 'new': <number> <title...> or <url>; for 'viz': [serve|stop]",
     )
+    parser.add_argument("-t", "--test", action="store_true", help="run the pytest suite")
+    parser.add_argument("-v", "--viz", action="store_true", help="open the visualization")
     parser.add_argument(
-        "-t", "--test", action="store_true", help="run the pytest suite"
+        "-d",
+        "--difficulty",
+        choices=["easy", "medium", "hard"],
+        type=str.lower,
+        help="for 'list': only this difficulty",
     )
-    parser.add_argument(
-        "-v", "--viz", action="store_true", help="open the visualization"
-    )
+    parser.add_argument("-p", "--pattern", help="for 'list': pattern contains this text")
+    parser.add_argument("-s", "--section", help="for 'list': study-plan section contains this text")
     args = parser.parse_args()
 
     if args.target == "list":
-        list_problems()
+        list_problems(args.difficulty, args.pattern, args.section)
         return 0
     if args.target == "viz":
         if args.rest == ["stop"]:
@@ -361,14 +412,10 @@ def main() -> int:
             import leetcode
 
             lc = leetcode.fetch(args.rest[0])
-            new_problem(
-                lc.number, lc.title, methods_from(lc.python), lc.difficulty, lc.slug
-            )
+            new_problem(lc.number, lc.title, methods_from(lc.python), lc.difficulty, lc.slug)
             return 0
         if len(args.rest) < 2 or not args.rest[0].isdigit():
-            parser.error(
-                "usage: main.py new <number> <title...>  or  main.py new <leetcode url>"
-            )
+            parser.error("usage: main.py new <number> <title...>  or  main.py new <leetcode url>")
         new_problem(int(args.rest[0]), " ".join(args.rest[1:]))
         return 0
     if not args.target.isdigit():

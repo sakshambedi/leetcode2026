@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Greedy · sum of positive differences',
 	lede: 'Any long climb is just its daily steps added up, so collect every day the price rises and skip every day it falls.'
 };
 

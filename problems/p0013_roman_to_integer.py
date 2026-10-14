@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 13
     title = "Roman to Integer"
     url = "https://leetcode.com/problems/roman-to-integer/"
+    difficulty = "Easy"
+    pattern = "Single scan · one-symbol lookahead"
     viz = "viz/src/routes/13/+page.svelte"
 
     def solve(self, s: str) -> int:

@@ -3,144 +3,216 @@
     "number": 6,
     "title": "Zigzag Conversion",
     "url": "https://leetcode.com/problems/zigzag-conversion/",
-    "stem": "p0006_zigzag_conversion"
+    "stem": "p0006_zigzag_conversion",
+    "difficulty": "Medium",
+    "pattern": "Simulation \u00b7 row buckets",
+    "section": "Array / String"
   },
   {
     "number": 12,
     "title": "Integer to Roman",
     "url": "https://leetcode.com/problems/integer-to-roman/",
-    "stem": "p0012_integer_to_roman"
+    "stem": "p0012_integer_to_roman",
+    "difficulty": "Medium",
+    "pattern": "Greedy \u00b7 fixed table",
+    "section": "Array / String"
   },
   {
     "number": 13,
     "title": "Roman to Integer",
     "url": "https://leetcode.com/problems/roman-to-integer/",
-    "stem": "p0013_roman_to_integer"
+    "stem": "p0013_roman_to_integer",
+    "difficulty": "Easy",
+    "pattern": "Single scan \u00b7 one-symbol lookahead",
+    "section": "Array / String"
   },
   {
     "number": 14,
     "title": "Longest Common Prefix",
     "url": "https://leetcode.com/problems/longest-common-prefix/",
-    "stem": "p0014_longest_common_prefix"
+    "stem": "p0014_longest_common_prefix",
+    "difficulty": "Easy",
+    "pattern": "Vertical scanning \u00b7 column by column",
+    "section": "Array / String"
   },
   {
     "number": 26,
     "title": "Remove Duplicates from Sorted Array",
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
-    "stem": "p0026_remove_duplicates_from_sorted_array"
+    "stem": "p0026_remove_duplicates_from_sorted_array",
+    "difficulty": "Easy",
+    "pattern": "Two pointers \u00b7 in place",
+    "section": "Array / String"
   },
   {
     "number": 27,
     "title": "Remove Element",
     "url": "https://leetcode.com/problems/remove-element/",
-    "stem": "p0027_remove_element"
+    "stem": "p0027_remove_element",
+    "difficulty": "Easy",
+    "pattern": "Two pointers \u00b7 in place",
+    "section": "Array / String"
   },
   {
     "number": 28,
     "title": "Find the Index of the First Occurrence in a String",
     "url": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
-    "stem": "p0028_find_the_index_of_the_first_occurrence_in_a_string"
+    "stem": "p0028_find_the_index_of_the_first_occurrence_in_a_string",
+    "difficulty": "Easy",
+    "pattern": "Sliding window \u00b7 naive string matching",
+    "section": "Array / String"
   },
   {
     "number": 42,
     "title": "Trapping Rain Water",
     "url": "https://leetcode.com/problems/trapping-rain-water/",
-    "stem": "p0042_trapping_rain_water"
+    "stem": "p0042_trapping_rain_water",
+    "difficulty": "Hard",
+    "pattern": "Two pointers \u00b7 running max from each end",
+    "section": "Array / String"
   },
   {
     "number": 45,
     "title": "Jump Game II",
     "url": "https://leetcode.com/problems/jump-game-ii/",
-    "stem": "p0045_jump_game_ii"
+    "stem": "p0045_jump_game_ii",
+    "difficulty": "Medium",
+    "pattern": "Greedy \u00b7 BFS by levels",
+    "section": "Array / String"
   },
   {
     "number": 55,
     "title": "Jump Game",
     "url": "https://leetcode.com/problems/jump-game/",
-    "stem": "p0055_jump_game"
+    "stem": "p0055_jump_game",
+    "difficulty": "Medium",
+    "pattern": "Greedy \u00b7 farthest reach",
+    "section": "Array / String"
   },
   {
     "number": 58,
     "title": "Length of Last Word",
     "url": "https://leetcode.com/problems/length-of-last-word/",
-    "stem": "p0058_length_of_last_word"
+    "stem": "p0058_length_of_last_word",
+    "difficulty": "Easy",
+    "pattern": "Reverse scan \u00b7 skip, then count",
+    "section": "Array / String"
   },
   {
     "number": 68,
     "title": "Text Justification",
     "url": "https://leetcode.com/problems/text-justification/",
-    "stem": "p0068_text_justification"
+    "stem": "p0068_text_justification",
+    "difficulty": "Hard",
+    "pattern": "Greedy \u00b7 line packing",
+    "section": "Array / String"
   },
   {
     "number": 80,
     "title": "Remove Duplicates from Sorted Array II",
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
-    "stem": "p0080_remove_duplicates_from_sorted_array_ii"
+    "stem": "p0080_remove_duplicates_from_sorted_array_ii",
+    "difficulty": "Medium",
+    "pattern": "Two pointers \u00b7 in place",
+    "section": "Array / String"
   },
   {
     "number": 88,
     "title": "Merge Sorted Array",
     "url": "https://leetcode.com/problems/merge-sorted-array/",
-    "stem": "p0088_merge_sorted_array"
+    "stem": "p0088_merge_sorted_array",
+    "difficulty": "Easy",
+    "pattern": "Three pointers \u00b7 in place",
+    "section": "Array / String"
   },
   {
     "number": 121,
     "title": "Best Time to Buy and Sell Stock",
     "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
-    "stem": "p0121_best_time_to_buy_and_sell_stock"
+    "stem": "p0121_best_time_to_buy_and_sell_stock",
+    "difficulty": "Easy",
+    "pattern": "One pass \u00b7 running minimum",
+    "section": "Array / String"
   },
   {
     "number": 122,
     "title": "Best Time to Buy and Sell Stock II",
     "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
-    "stem": "p0122_best_time_to_buy_and_sell_stock_ii"
+    "stem": "p0122_best_time_to_buy_and_sell_stock_ii",
+    "difficulty": "Medium",
+    "pattern": "Greedy \u00b7 sum of positive differences",
+    "section": "Array / String"
   },
   {
     "number": 134,
     "title": "Gas Station",
     "url": "https://leetcode.com/problems/gas-station/",
-    "stem": "p0134_gas_station"
+    "stem": "p0134_gas_station",
+    "difficulty": "Medium",
+    "pattern": "Greedy \u00b7 reset the start",
+    "section": "Array / String"
   },
   {
     "number": 135,
     "title": "Candy",
     "url": "https://leetcode.com/problems/candy/",
-    "stem": "p0135_candy"
+    "stem": "p0135_candy",
+    "difficulty": "Hard",
+    "pattern": "Greedy \u00b7 two passes",
+    "section": "Array / String"
   },
   {
     "number": 151,
     "title": "Reverse Words in a String",
     "url": "https://leetcode.com/problems/reverse-words-in-a-string/",
-    "stem": "p0151_reverse_words_in_a_string"
+    "stem": "p0151_reverse_words_in_a_string",
+    "difficulty": "Medium",
+    "pattern": "Two pointers \u00b7 right-to-left word scan",
+    "section": "Array / String"
   },
   {
     "number": 169,
     "title": "Majority Element",
     "url": "https://leetcode.com/problems/majority-element/",
-    "stem": "p0169_majority_element"
+    "stem": "p0169_majority_element",
+    "difficulty": "Easy",
+    "pattern": "Boyer\u2013Moore voting \u00b7 one pass",
+    "section": "Array / String"
   },
   {
     "number": 189,
     "title": "Rotate Array",
     "url": "https://leetcode.com/problems/rotate-array/",
-    "stem": "p0189_rotate_array"
+    "stem": "p0189_rotate_array",
+    "difficulty": "Medium",
+    "pattern": "Three reversals \u00b7 in place",
+    "section": "Array / String"
   },
   {
     "number": 238,
     "title": "Product of Array Except Self",
     "url": "https://leetcode.com/problems/product-of-array-except-self/",
-    "stem": "p0238_product_of_array_except_self"
+    "stem": "p0238_product_of_array_except_self",
+    "difficulty": "Medium",
+    "pattern": "Prefix and suffix products \u00b7 two passes",
+    "section": "Array / String"
   },
   {
     "number": 274,
     "title": "H-Index",
     "url": "https://leetcode.com/problems/h-index/",
-    "stem": "p0274_h_index"
+    "stem": "p0274_h_index",
+    "difficulty": "Medium",
+    "pattern": "Sort \u00b7 walk the ranks",
+    "section": "Array / String"
   },
   {
     "number": 380,
     "title": "Insert Delete GetRandom O(1)",
     "url": "https://leetcode.com/problems/insert-delete-getrandom-o1/",
-    "stem": "p0380_insert_delete_getrandom_o_1"
+    "stem": "p0380_insert_delete_getrandom_o_1",
+    "difficulty": "Medium",
+    "pattern": "Design \u00b7 array + hash map",
+    "section": "Array / String"
   }
 ]

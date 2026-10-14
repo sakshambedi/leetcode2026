@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Two pointers · in place',
 	lede: 'A value may stay unless the kept value two back already equals it: compare nums[i] with nums[k − 2], and write keepers at k.'
 };
 

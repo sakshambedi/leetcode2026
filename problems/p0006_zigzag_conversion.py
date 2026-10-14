@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 6
     title = "Zigzag Conversion"
     url = "https://leetcode.com/problems/zigzag-conversion/"
+    difficulty = "Medium"
+    pattern = "Simulation · row buckets"
     viz = "viz/src/routes/6/+page.svelte"
 
     def solve(self, s: str, numRows: int) -> str:

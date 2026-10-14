@@ -1,5 +1,8 @@
 import { createContext } from 'svelte';
+import { quintOut } from 'svelte/easing';
+import { prefersReducedMotion } from 'svelte/motion';
 import type { Camera } from '../../iso.ts';
+import { ms } from '../../transitions.ts';
 
 /** The camera every figure part draws with; set once by <Figure>. */
 export const [getCamera, setCamera] = createContext<Camera>();
@@ -16,3 +19,13 @@ export const TILE = { size: 34, pitch: 44, height: 12 } as const;
  */
 export const lerpList = (a: number[], b: number[]) => (t: number) =>
 	b.map((v, i) => (a[i] === undefined ? v : a[i] + (v - a[i]) * t));
+
+/**
+ * Tween options for heights that rise and fall between steps: card resize timing, --resize-dur
+ * with the smooth ease-out (quintOut is cubic-bezier(0.22, 1, 0.36, 1)).
+ */
+export const HEIGHT_TWEEN = {
+	duration: () => (prefersReducedMotion.current ? 0 : ms('--resize-dur', 300)),
+	easing: quintOut,
+	interpolate: lerpList
+};

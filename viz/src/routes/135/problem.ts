@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Hard',
-	pattern: 'Greedy · two passes',
 	lede: 'Climb each rising slope going right, then each falling slope coming back, keeping the larger count where the two meet.'
 };
 

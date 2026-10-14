@@ -37,6 +37,8 @@ uv run main.py new "<url or slug>"
 ## 3. Python file: `problems/pNNNN_<slug>.py`
 
 1. **Docstring:** `Pattern:` (e.g. "two pointers, read and write (fast / slow) in place") and `Recall:`, two sentences that unlock the solution.
+   **Class attributes:** `difficulty` is filled from LeetCode; replace the `pattern` TODO with a short `"Family · detail"` label.
+   Reuse a family already in `uv run main.py list` when it fits (Two pointers, Sliding window, Greedy, ...), since the index filters by family.
 2. **`solve()`:** adapt it so its return value can be compared with `expected`.
    - In-place with a count, like Remove Element: `k = self.method(nums); return k, nums[:k]`, with `expected=(k, [...])`.
    - In-place with no return: call the method, then return the mutated input.
@@ -70,7 +72,7 @@ After this, `uv run main.py N --test` failing only because the method is unsolve
 Follow the "Visualization" section of `CLAUDE.md`. In short:
 
 - **`problem.ts`:**
-  - `meta`: difficulty from LeetCode, pattern, and a one-sentence lede.
+  - `meta`: a one-sentence lede. Difficulty and pattern live on the Python class.
   - `trace(args)`: the canonical solution. Each step is a full-state snapshot with a *why* `msg` and the `line` of `code` it runs.
   - `vars`: every variable the code uses, each with a short note.
   - `result`: the answer in the same shape as Python's `expected`.

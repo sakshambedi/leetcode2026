@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Vertical scanning · column by column',
 	lede: 'Read the strings column by column: the prefix grows while every string has the same letter at i, and stops at the first one that is too short or differs.'
 };
 

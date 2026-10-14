@@ -2,6 +2,7 @@
 
 uv run leetcode.py https://leetcode.com/problems/two-sum/   print it as JSON (for the skill)
 uv run main.py new https://leetcode.com/problems/two-sum/   scaffold from it
+uv run leetcode.py plan top-interview-150 > studyplans/top-interview-150.json   refresh a study plan
 """
 
 import html
@@ -20,6 +21,13 @@ query question($titleSlug: String!) {
     exampleTestcaseList metaData
     topicTags { name }
     codeSnippets { langSlug code }
+  }
+}"""
+PLAN_QUERY = """
+query studyPlan($slug: String!) {
+  studyPlanV2Detail(planSlug: $slug) {
+    slug name
+    planSubGroups { name questions { questionFrontendId title titleSlug difficulty } }
   }
 }"""
 
@@ -71,9 +79,8 @@ class _Text(HTMLParser):
         return re.sub(r"\n{3,}", "\n\n", t).strip()
 
 
-def fetch(url_or_slug: str) -> LeetCodeProblem:
-    slug = slug_of(url_or_slug)
-    body = json.dumps({"query": QUERY, "variables": {"titleSlug": slug}}).encode()
+def _graphql(query: str, variables: dict) -> dict:
+    body = json.dumps({"query": query, "variables": variables}).encode()
     req = urllib.request.Request(
         GRAPHQL,
         data=body,
@@ -84,7 +91,48 @@ def fetch(url_or_slug: str) -> LeetCodeProblem:
         },
     )
     with urllib.request.urlopen(req, timeout=15) as resp:
-        q = json.load(resp)["data"]["question"]
+        return json.load(resp)["data"]
+
+
+def fetch_plan(url_or_slug: str) -> dict:
+    """A study plan's sections in plan order, e.g. ``top-interview-150``.
+
+    Args:
+        url_or_slug: ``https://leetcode.com/studyplan/<slug>/`` or the bare slug.
+
+    Returns:
+        ``{"slug", "name", "url", "sections": [{"name", "problems": [{number, title, slug, difficulty}]}]}``.
+    """
+    m = re.search(r"leetcode\.com/studyplan/([\w-]+)", url_or_slug)
+    slug = m.group(1) if m else url_or_slug.strip("/ ")
+    plan = _graphql(PLAN_QUERY, {"slug": slug})["studyPlanV2Detail"]
+    if plan is None:
+        raise ValueError(f"No LeetCode study plan with slug {slug!r}")
+    return {
+        "slug": plan["slug"],
+        "name": plan["name"],
+        "url": f"https://leetcode.com/studyplan/{plan['slug']}/",
+        "sections": [
+            {
+                "name": group["name"],
+                "problems": [
+                    {
+                        "number": int(q["questionFrontendId"]),
+                        "title": q["title"],
+                        "slug": q["titleSlug"],
+                        "difficulty": q["difficulty"].capitalize(),
+                    }
+                    for q in group["questions"]
+                ],
+            }
+            for group in plan["planSubGroups"]
+        ],
+    }
+
+
+def fetch(url_or_slug: str) -> LeetCodeProblem:
+    slug = slug_of(url_or_slug)
+    q = _graphql(QUERY, {"titleSlug": slug})["question"]
     if q is None:
         raise ValueError(f"No LeetCode problem with slug {slug!r}")
     if not q["content"]:
@@ -93,9 +141,7 @@ def fetch(url_or_slug: str) -> LeetCodeProblem:
     parser = _Text()
     parser.feed(q["content"])
     meta = json.loads(q["metaData"] or "{}")
-    python = next(
-        (s["code"] for s in q["codeSnippets"] or [] if s["langSlug"] == "python3"), ""
-    )
+    python = next((s["code"] for s in q["codeSnippets"] or [] if s["langSlug"] == "python3"), "")
     return LeetCodeProblem(
         number=int(q["questionFrontendId"]),
         title=q["title"],
@@ -113,6 +159,9 @@ def fetch(url_or_slug: str) -> LeetCodeProblem:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 3 and sys.argv[1] == "plan":
+        print(json.dumps(fetch_plan(sys.argv[2]), indent=2))
+    elif len(sys.argv) == 2:
+        print(json.dumps(asdict(fetch(sys.argv[1])), indent=2))
+    else:
         sys.exit(__doc__)
-    print(json.dumps(asdict(fetch(sys.argv[1])), indent=2))

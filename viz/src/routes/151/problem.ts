@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Two pointers · right-to-left word scan',
 	lede: 'Read s from the right: skip spaces, mark a word’s last letter with j, walk i to the space before it, and append that word; the words come out already reversed.'
 };
 

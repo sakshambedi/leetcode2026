@@ -6,9 +6,8 @@
 </script>
 
 <script lang="ts">
-	import { Tween, prefersReducedMotion } from 'svelte/motion';
-	import { cubicOut } from 'svelte/easing';
-	import { TILE, lerpList } from './context.ts';
+	import { Tween } from 'svelte/motion';
+	import { HEIGHT_TWEEN, TILE } from './context.ts';
 	import Halo from './Halo.svelte';
 	import Tile from './Tile.svelte';
 	import Slot from './Slot.svelte';
@@ -40,10 +39,7 @@
 	const cx = (i: number) => (i + offset) * P + T / 2;
 
 	// Tiles rise and fall between states; lerpList lets a row grow or shrink between steps too.
-	const heights = Tween.of(
-		() => values.map((_, i) => ((states?.[i] ?? 'up') === 'up' ? H : 0)),
-		{ duration: () => (prefersReducedMotion.current ? 0 : 320), easing: cubicOut, interpolate: lerpList }
-	);
+	const heights = Tween.of(() => values.map((_, i) => ((states?.[i] ?? 'up') === 'up' ? H : 0)), HEIGHT_TWEEN);
 
 	const pointerLabels = $derived.by(() => {
 		const at = new Map<number, string[]>();

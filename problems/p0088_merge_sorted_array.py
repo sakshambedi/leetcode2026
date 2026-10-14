@@ -16,6 +16,8 @@ class Solution(problem.Problem):
     number = 88
     title = "Merge Sorted Array"
     url = "https://leetcode.com/problems/merge-sorted-array/"
+    difficulty = "Easy"
+    pattern = "Three pointers · in place"
     viz = "viz/src/routes/88/+page.svelte"
 
     def solve(self, nums1: list[int], m: int, nums2: list[int], n: int) -> list[int]:

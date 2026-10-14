@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Reverse scan · skip, then count',
 	lede: 'The last word is at the end, so walk in from the back: skip the trailing spaces, then count letters until the next space.'
 };
 

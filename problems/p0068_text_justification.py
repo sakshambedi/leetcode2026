@@ -19,6 +19,8 @@ class Solution(problem.Problem):
     number = 68
     title = "Text Justification"
     url = "https://leetcode.com/problems/text-justification/"
+    difficulty = "Hard"
+    pattern = "Greedy · line packing"
     viz = "viz/src/routes/68/+page.svelte"
 
     def solve(self, words: list[str], maxWidth: int) -> list[str]:

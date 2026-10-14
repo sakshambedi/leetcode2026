@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 121
     title = "Best Time to Buy and Sell Stock"
     url = "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+    difficulty = "Easy"
+    pattern = "One pass · running minimum"
     viz = "viz/src/routes/121/+page.svelte"
 
     def solve(self, prices: list[int]) -> int:
@@ -33,7 +35,13 @@ class Solution(problem.Problem):
         Returns:
             The maximum profit of a single transaction, or 0 if no sale makes money.
         """
-        raise NotImplementedError  # your solution
+        buy, profit = 0, 0
+        for sell in range(1, len(prices)):
+            if prices[sell] - prices[buy] > profit:
+                profit = prices[sell] - prices[buy]
+            if prices[buy] > prices[sell]:
+                buy = sell
+        return profit
 
 
 # Examples from the problem statement: `uv run main.py 121`
@@ -51,6 +59,7 @@ CASES = [
     pytest.param([1, 2, 3, 4, 5], 4, id="strictly_rising"),
     pytest.param([2, 4, 1], 2, id="new_minimum_after_best_sale"),
     pytest.param([3, 8, 1, 4], 5, id="best_sale_before_lower_minimum"),
+    pytest.param([3, 8, 1, 10], 9, id="best_sale_before_lower_minimum"),
     pytest.param([5, 9, 1, 6, 2, 8], 7, id="later_minimum_gives_better_profit"),
     pytest.param([4, 7, 2, 4, 1, 3], 3, id="lower_minimums_never_beat_first"),
     pytest.param([0, 10000], 10000, id="value_bounds"),

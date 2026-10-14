@@ -7,10 +7,12 @@ uv run main.py 88            # run the statement examples for problem 88
 uv run main.py 88 --test     # full pytest suite (examples + edge cases)
 uv run main.py 88 --viz      # export cases, start the viz dev server if needed, open localhost:5274/88
 uv run main.py viz           # open the viz index; `viz serve` starts the server only; `viz stop` stops it
-uv run main.py list          # list problems and their viz routes
+uv run main.py list          # list problems with section, difficulty and pattern
+uv run main.py list -d medium -p greedy -s "sliding window"   # filter; -s also lists the section's problems not added yet
 uv run main.py new <url>     # scaffold from a LeetCode URL: number, title, difficulty, method signature
 uv run main.py new 1 Two Sum # scaffold by hand, without fetching
 uv run leetcode.py <url>     # print a problem's statement, examples, constraints and signature as JSON
+uv run leetcode.py plan top-interview-150 > studyplans/top-interview-150.json   # refresh the study plan's sections
 uv run pytest                # every Python problem
 uv run ruff format .         # format Python (also formats ```python blocks inside docstrings)
 uv run ruff check .          # lint: pyflakes, imports, modern syntax, bugbear, Google docstrings
@@ -22,17 +24,23 @@ cd viz && pnpm check         # svelte-check / TypeScript
 
 - `problem.py`: `Problem` base class, `example()` helper, `as_params()`. Keep `problem.pyi` in sync.
 - `problems/pNNNN_<slug>.py`: one file per problem; number zero-padded to 4 digits, slug in snake_case.
+- `studyplans/top-interview-150.json`: the Top Interview 150 sections in plan order, fetched from LeetCode.
+  A problem's section is looked up here by number, so there is nothing to set per problem.
 - `templates/`: `problem.py.tmpl` plus `viz/problem.ts.tmpl` and `viz/+page.svelte.tmpl`, used by `main.py new`.
 - `viz/`: the SvelteKit app.
   - `src/routes/<N>/problem.ts`: the algorithm side of problem N: `meta`, and `problem` (trace, vars, result, ...).
   - `src/routes/<N>/+page.svelte`: the figure and recall notes, rendered through `<ProblemPage>`.
-  - `src/routes/+page.svelte`: index of every problem.
-  - `src/lib/components/`: shared UI. `ProblemPage` (the whole page), `CasePicker`, `Transport`, `VarsTable`, `CodeBlock`, `ThemeSwitch`.
+  - `src/routes/+page.svelte`: index of every problem, grouped by plan section, filterable by difficulty, section and pattern family (kept in the query string).
+  - `src/lib/components/`: shared UI. `ProblemPage` (the whole page), `CasePicker`, `Transport`, `VarsTable`, `CodeBlock`, `ThemeSwitch`,
+    and the text transitions `SwapText` (narration, verdict), `SoftText` (values, counts), `MorphText` (button labels).
   - `src/lib/components/figure/`: shared drawing. `Figure` (svg + camera), `ArrayRow`, `Tile`, `Slot`, `Halo`, `Label`, `Dots`; `TILE` sizes in `context.ts`.
   - `src/lib/iso.ts`: pure isometric geometry. `src/lib/player.svelte.ts`: playback state. `src/lib/types.ts`: `Problem`, `Step`, `Case`, `Meta`.
-  - `src/lib/generated/`: `problems.json` and `cases/<stem>.json`, written by `main.py` from the Python files. Never edit by hand.
+  - `src/lib/generated/`: `problems.json` (number, title, url, difficulty, pattern, section), `studyplan.json` and `cases/<stem>.json`, written by `main.py` from the Python files. Never edit by hand.
   - `src/lib/traces.test.ts`: runs every route's trace on every exported case.
   - `src/app.css`: the Anatomy design tokens for all five themes, plus shared `.btn` styles.
+  - `src/lib/transitions.css` + `transitions.ts`: UI motion from the transitions-dev skill (`.agents/skills/`): the motion tokens
+    (`--duration-*`, `--ease-*`, ...) and the `t-*` snippets, plus `slidingPill` (tabs sliding), `shake` and `ms()` (reads a duration token).
+    Use the tokens for any new UI motion instead of hard-coded `ms` values; the figure's own motion stays physical (tiles rise and fall).
 
 To add a problem from a LeetCode link, use the **`leetcode-problem` skill** (`.claude/skills/leetcode-problem/`).
 It fetches the statement and scaffolds both files. It fills in the examples and verified edge cases, builds the visualization, and checks the result with screenshots.
@@ -45,7 +53,11 @@ It leaves the LeetCode method for the user to solve, and never overwrites a solu
 Top to bottom:
 
 1. Module docstring: `N. Title`, `Pattern:`, `Recall:` (the one idea that unlocks it), `Viz: viz/src/routes/N/`.
-2. `class Solution(problem.Problem)` with `number`, `title`, `url`, `viz = "viz/src/routes/N/+page.svelte"`.
+2. `class Solution(problem.Problem)` with `number`, `title`, `url`, `difficulty` (`"Easy"` / `"Medium"` / `"Hard"`, as on LeetCode),
+   `pattern`, `viz = "viz/src/routes/N/+page.svelte"`.
+   - `pattern` is a short label, `"Family · detail"` (e.g. `"Two pointers · in place"`, `"Sliding window · shrink while valid"`).
+     The family before ` · ` is what the index's Pattern filter groups by, so reuse an existing family when one fits (`uv run main.py list`).
+     This is the source of truth for difficulty and pattern: the viz reads them from `problems.json`.
    - The LeetCode method keeps its original name (e.g. `merge`). Type it with builtins (`list[int]`, `X | None`, never `typing.List` / `Optional`).
      Give it a Google-style docstring (summary, `Args:`, `Returns:`) so editor hovers show it properly; never reST `:type:` fields.
    - `solve()` calls it and returns the result; for in-place problems it returns the mutated input.
@@ -70,7 +82,7 @@ The goal is recall: opening the viz weeks later should bring the approach back i
 - No new runtime dependencies or CDNs. Style with the `--anatomy-*` tokens in scoped `<style>` blocks.
 
 ### problem.ts
-- `meta`: `difficulty`, `pattern`, and `lede`, one sentence that gives the whole idea.
+- `meta`: `lede`, one sentence that gives the whole idea. (Difficulty and pattern come from the Python class.)
 - `trace(args)` takes the same arguments as the Python `solve()` and returns one snapshot per step. Each has the full state the figure needs,
   a one-sentence `msg` explaining *why* that move happens, and `line`, the 1-based line of the core-loop `code` that step runs.
 - `vars(step)` returns `[{ name, value, note }]` for every variable the code uses: pointers, counters, derived quantities like `gap`, and inputs like `val`.

@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 134
     title = "Gas Station"
     url = "https://leetcode.com/problems/gas-station/"
+    difficulty = "Medium"
+    pattern = "Greedy · reset the start"
     viz = "viz/src/routes/134/+page.svelte"
 
     def solve(self, gas: list[int], cost: list[int]) -> int:

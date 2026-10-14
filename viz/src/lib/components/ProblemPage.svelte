@@ -8,6 +8,7 @@
 	import { defaultFits, fmt, sameJSON, type BaseStep, type Case, type Meta, type Problem, type ProblemInfo } from '../types.ts';
 	import CasePicker from './CasePicker.svelte';
 	import CodeBlock from './CodeBlock.svelte';
+	import SwapText from './SwapText.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
 	import Transport from './Transport.svelte';
 	import VarsTable from './VarsTable.svelte';
@@ -77,11 +78,18 @@
 
 <main>
 	<header>
-		<div class="meta">
-			<a href={resolve('/')}>← All problems</a>
-			<span>Nº {number}</span><span class="caps">{meta.difficulty}</span><span class="caps">{meta.pattern}</span>
-			{#if info}<a href={info.url}>leetcode ↗</a>{/if}
+		<nav class="bar">
+			<a href={resolve('/')}>← All<span class="wide"> problems</span></a>
 			<ThemeSwitch />
+		</nav>
+		<div class="meta">
+			<span>Nº {number}</span>
+			{#if info}
+				<span class="caps">{info.difficulty}</span>
+				{@const [family, ...detail] = info.pattern.split(' · ')}
+				<span><span class="family">{family}</span>{detail.length ? ` · ${detail.join(' · ')}` : ''}</span>
+				<a href={info.url}>leetcode ↗</a>
+			{/if}
 		</div>
 		<h1>{title}</h1>
 		<p class="lede">{meta.lede}</p>
@@ -101,11 +109,15 @@
 			<div>
 				<dt>Output</dt>
 				<dd aria-live="polite">
-					{#if output === undefined}
-						<span class="muted">shown at the last step</span>
-					{:else}
-						<span class="verdict" data-ok={ok}>{ok ? '✓ matches' : '✗ differs'}</span> {fmt(output)}
-					{/if}
+					<SwapText value={output === undefined ? undefined : { output, ok }}>
+						{#snippet children(v)}
+							{#if v === undefined}
+								<span class="muted">shown at the last step</span>
+							{:else}
+								<span class="verdict" data-ok={v.ok}>{v.ok ? '✓ matches' : '✗ differs'}</span> {fmt(v.output)}
+							{/if}
+						{/snippet}
+					</SwapText>
 				</dd>
 			</div>
 		</dl>
@@ -118,7 +130,7 @@
 		</figure>
 
 		<div class="player">
-			<p class="msg" aria-live="polite">{player.step.msg}</p>
+			<p class="msg" aria-live="polite"><SwapText value={player.step.msg} /></p>
 			<Transport {player} />
 		</div>
 	{/if}
@@ -131,10 +143,15 @@
 <style>
 	main { max-width: 760px; margin: 0 auto; padding: 56px 20px 96px; }
 	header { margin-bottom: 28px; }
-	.meta {
-		display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline;
+	.bar, .meta {
+		display: flex; gap: 6px 18px; flex-wrap: wrap; align-items: baseline;
 		font: 11px var(--anatomy-mono); letter-spacing: 0.04em; color: var(--anatomy-muted);
 	}
+	.bar { margin-bottom: 32px; }
+	/* Keeps the back link and the theme switch on one line on a phone. */
+	@media (max-width: 420px) { .wide { display: none; } }
+	.meta a { color: var(--anatomy-muted); }
+	.family { color: var(--anatomy-text); }
 	.caps { text-transform: uppercase; letter-spacing: 0.1em; }
 	h1 { font: 400 40px/1.1 var(--font-serif); color: var(--anatomy-strong); margin: 10px 0 6px; letter-spacing: -0.01em; }
 	.lede { font: italic 19px/1.45 var(--font-serif); margin: 0; max-width: 34em; }

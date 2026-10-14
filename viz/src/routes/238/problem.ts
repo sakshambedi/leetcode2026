@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Prefix and suffix products · two passes',
 	lede: 'answer[i] is everything to the left times everything to the right: write the left products going right, then multiply in a running right product coming back.'
 };
 

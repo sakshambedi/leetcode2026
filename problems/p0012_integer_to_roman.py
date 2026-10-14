@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 12
     title = "Integer to Roman"
     url = "https://leetcode.com/problems/integer-to-roman/"
+    difficulty = "Medium"
+    pattern = "Greedy · fixed table"
     viz = "viz/src/routes/12/+page.svelte"
 
     def solve(self, num: int) -> str:

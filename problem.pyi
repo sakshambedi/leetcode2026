@@ -13,6 +13,8 @@ class Problem(ABC):
     number: ClassVar[int]
     title: ClassVar[str]
     url: ClassVar[str]
+    difficulty: ClassVar[str]
+    pattern: ClassVar[str]
     viz: ClassVar[str | None]
     @abstractmethod
     def solve(self, *args: Any, **kwargs: Any) -> Any: ...

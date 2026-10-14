@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Three pointers · in place',
 	lede: 'Fill nums1 from the back, largest first, so a write never lands on a value you still need to read.'
 };
 

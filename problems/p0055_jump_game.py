@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 55
     title = "Jump Game"
     url = "https://leetcode.com/problems/jump-game/"
+    difficulty = "Medium"
+    pattern = "Greedy · farthest reach"
     viz = "viz/src/routes/55/+page.svelte"
 
     def solve(self, nums: list[int]) -> bool:

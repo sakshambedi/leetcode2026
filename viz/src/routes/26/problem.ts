@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Two pointers · in place',
 	lede: 'Sorted means duplicates touch: keep a value only when it differs from the last one you kept, and write it at k.'
 };
 

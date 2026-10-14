@@ -1,0 +1,346 @@
+/* Motion, after transitions.dev (.agents/skills/transitions-dev). The motion-token scale, then the
+   variables and CSS of each transition the app uses, pasted from the skill's reference files.
+   Colors come from the Anatomy tokens in app.css, so every theme works. */
+
+:root {
+	/* Durations */
+	--duration-stagger: 40ms;  /* per-item stagger offset */
+	--duration-micro: 80ms;  /* tooltip/path delay, shake segment, large stagger */
+	--duration-quick: 150ms;  /* modal/dropdown close, text swap, tooltip appear */
+	--duration-fast: 250ms;  /* icon swap, dropdown/modal open, tabs sliding, page slide */
+	--duration-medium: 350ms;  /* panel close, toast close */
+	--duration-slow: 400ms;  /* panel open, skeleton content reveal, input clear */
+	--duration-very-slow: 500ms;  /* emphasis moments, badge appear, text reveal, success check */
+	/* Easings */
+	--ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);  /* modal/dropdown/panel open + close, page slide, resize, position change */
+	--ease-in-out: ease-in-out;  /* icon swap, text swap, text reveal, skeleton reveal */
+	--ease-out: ease-out;  /* tooltip open / close */
+	--ease-linear: linear;  /* shimmer, skeleton pulse, spinner */
+	--ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1);  /* badge pop open */
+	--ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1);  /* bouncy hover-out (avatar return) */
+	/* Distances */
+	--distance-micro: 4px;  /* text swap */
+	--distance-small: 6px;  /* error shake (small segment) */
+	--distance-base: 8px;  /* badge diagonal reveal, page slide, error shake (large segment) */
+	--distance-medium: 12px;  /* text reveal */
+	--distance-large: 30px;  /* check badge appear */
+	/* Scales */
+	--scale-large: 0.96;  /* modal open / close */
+	--scale-medium: 0.97;  /* dropdown open */
+	--scale-small: 0.98;  /* tooltip open */
+	--scale-tiny: 0.99;  /* dropdown close */
+	/* Blur */
+	--blur-small: 2px;  /* panel reveal, icon swap, text swap, skeleton reveal, number pop-in */
+	--blur-medium: 3px;  /* page slide, text reveal */
+	--blur-large: 8px;  /* success check open */
+
+	/* Card resize: tiles rising and falling in the figure (read by the Tweens in figure/context.ts) */
+	--resize-dur: 300ms;
+	--resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	/* Text states swap: the narration, the output verdict */
+	--text-swap-dur: 150ms;
+	--text-swap-translate-y: 4px;
+	--text-swap-blur: 2px;
+	--text-swap-ease: ease-in-out;
+	/* Text swap soft: variable values, the step count, the problem count */
+	--text-soft-dur: 200ms;
+	--text-soft-blur: 2px;
+	--text-soft-ease: ease-in-out;
+	--text-soft-resize-dur: 240ms;
+	--text-soft-resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	/* Text morph: Copy → Copied, Play → Pause → Replay */
+	--text-morph-dur: 180ms;
+	--text-morph-resize-dur: 240ms;
+	--text-morph-blur: 2px;
+	--text-morph-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	/* Icon swap: play ↔ pause */
+	--icon-swap-dur: 250ms;
+	--icon-swap-blur: 2px;
+	--icon-swap-start-scale: 0.25;
+	--icon-swap-ease: ease-in-out;
+	/* Tabs sliding: speed control, difficulty filter. Each bar sets its own --tabs-pill-bg. */
+	--tabs-dur: 250ms;
+	--tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--tabs-pill-bg: var(--well);
+	/* Error state shake: Custom input that fails to parse */
+	--shake-distance: 6px;
+	--shake-overshoot: 4px;
+	--shake-dur-a: 80ms;
+	--shake-dur-b: 60ms;
+	--shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--revert-dur: 280ms;
+	/* Accordion expand: the Custom form */
+	--acc-expand: 250ms;
+	--acc-collapse: 250ms;
+	--acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	/* Page side-by-side: index ↔ problem */
+	--page-slide-dur: 250ms;
+	--page-fade-dur: 250ms;
+	--page-slide-distance: 8px;
+	--page-blur: 3px;
+	--page-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--page-fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Text states swap (04) ──────────────────────────────────────── */
+.t-text-swap {
+	display: inline-block;
+	transform: translateY(0);
+	filter: blur(0);
+	opacity: 1;
+	transition:
+		transform var(--text-swap-dur) var(--text-swap-ease),
+		filter    var(--text-swap-dur) var(--text-swap-ease),
+		opacity   var(--text-swap-dur) var(--text-swap-ease);
+	will-change: transform, filter, opacity;
+}
+.t-text-swap.is-exit {
+	transform: translateY(calc(var(--text-swap-translate-y) * -1));
+	filter: blur(var(--text-swap-blur));
+	opacity: 0;
+}
+.t-text-swap.is-enter-start {
+	transform: translateY(var(--text-swap-translate-y));
+	filter: blur(var(--text-swap-blur));
+	opacity: 0;
+	transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-text-swap { transition: none !important; }
+}
+
+/* ── Text swap soft (34) ────────────────────────────────────────── */
+/* Both texts share one grid cell, so they cross-blur in place; the
+   cell's width eases between them. */
+.t-text-soft {
+	display: inline-grid;
+	justify-items: var(--text-soft-align, start);
+	transition: width var(--text-soft-resize-dur) var(--text-soft-resize-ease);
+}
+.t-text-soft > span {
+	grid-area: 1 / 1;
+	white-space: pre;
+	transition:
+		filter  var(--text-soft-dur) var(--text-soft-ease),
+		opacity var(--text-soft-dur) var(--text-soft-ease);
+}
+.t-text-soft-new {
+	opacity: 0;
+	filter: blur(var(--text-soft-blur));
+}
+.t-text-soft.is-swapping .t-text-soft-old {
+	opacity: 0;
+	filter: blur(var(--text-soft-blur));
+}
+.t-text-soft.is-swapping .t-text-soft-new {
+	opacity: 1;
+	filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-text-soft,
+	.t-text-soft > span { transition: none !important; }
+}
+
+/* ── Text morph (33) ────────────────────────────────────────────── */
+.t-morph {
+	white-space: nowrap;
+}
+/* The changing part: both versions share one grid cell, so they
+   cross-blur in place; the cell's width eases between them. */
+.t-morph-swap {
+	display: inline-grid;
+	vertical-align: bottom;
+	justify-items: start;
+	transition: width var(--text-morph-resize-dur) var(--text-morph-ease);
+}
+.t-morph-swap > span {
+	grid-area: 1 / 1;
+	white-space: pre;
+	transition:
+		opacity var(--text-morph-dur) var(--text-morph-ease),
+		filter  var(--text-morph-dur) var(--text-morph-ease);
+}
+.t-morph-new {
+	opacity: 0;
+	filter: blur(var(--text-morph-blur));
+}
+.t-morph-swap.is-morphing .t-morph-old {
+	opacity: 0;
+	filter: blur(var(--text-morph-blur));
+}
+.t-morph-swap.is-morphing .t-morph-new {
+	opacity: 1;
+	filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-morph-swap,
+	.t-morph-swap > span { transition: none !important; }
+}
+
+/* ── Icon swap (09) ─────────────────────────────────────────────── */
+.t-icon-swap {
+	position: relative;
+	display: inline-grid;
+}
+.t-icon-swap .t-icon {
+	grid-area: 1 / 1;
+	transition:
+		opacity   var(--icon-swap-dur) var(--icon-swap-ease),
+		filter    var(--icon-swap-dur) var(--icon-swap-ease),
+		transform var(--icon-swap-dur) var(--icon-swap-ease);
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="a"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="b"] {
+	opacity: 1;
+	filter: blur(0);
+	transform: scale(1);
+}
+.t-icon-swap[data-state="a"] .t-icon[data-icon="b"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="a"] {
+	opacity: 0;
+	filter: blur(var(--icon-swap-blur));
+	transform: scale(var(--icon-swap-start-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-icon-swap .t-icon { transition: none !important; }
+}
+
+/* ── Tabs sliding (16) ──────────────────────────────────────────── */
+/* Only the pill and the label color: each bar keeps its own look. The slidingPill
+   attachment (transitions.ts) writes transform, width and height inline. */
+.t-tabs { position: relative; }
+.t-tab {
+	position: relative;
+	z-index: 1;
+	transition: color var(--tabs-dur) var(--tabs-ease);
+}
+.t-tabs-pill {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	background: var(--tabs-pill-bg);
+	border-radius: var(--tabs-pill-radius, 48px);
+	transform: translateX(0);
+	transition:
+		transform var(--tabs-dur) var(--tabs-ease),
+		width     var(--tabs-dur) var(--tabs-ease);
+	will-change: transform, width;
+	z-index: 0;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-tabs-pill, .t-tab { transition: none !important; }
+}
+
+/* ── Error state shake (12) ─────────────────────────────────────── */
+/* Border-color tween only: the input's own CSS sets the colors. */
+.t-input {
+	transition: border-color 150ms ease-out;
+	will-change: transform;
+}
+.t-input.is-error {
+	transition: border-color var(--revert-dur, 280ms) ease-out;
+}
+
+/* Visibility is delayed by --revert-dur on hide so the message stays
+   painted for the full opacity fade-out. */
+.t-error-msg {
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity    var(--revert-dur, 280ms) ease-out,
+		visibility 0s linear var(--revert-dur, 280ms);
+}
+.t-input-wrap.is-error .t-error-msg {
+	opacity: 1;
+	visibility: visible;
+	transition:
+		opacity    var(--revert-dur, 280ms) ease-out,
+		visibility 0s linear 0s;
+}
+
+/* %-stops are cumulative leg durations (80, 60, 80, 60 = 280ms). */
+.t-input.is-shaking {
+	animation: t-input-shake calc(
+			var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2
+		) linear;
+}
+@keyframes t-input-shake {
+	0%      { transform: translateX(0);                                 animation-timing-function: var(--shake-ease); }
+	28.57%  { transform: translateX(var(--shake-distance));             animation-timing-function: var(--shake-ease); }
+	57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
+	78.57%  { transform: translateX(var(--shake-overshoot));            animation-timing-function: var(--shake-ease); }
+	100%    { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-input { animation: none !important; transform: none !important; }
+}
+
+/* ── Accordion expand (21), panel only ──────────────────────────── */
+/* grid-template-rows 0fr → 1fr gives a clean height animation
+   with no JS measurement; the inner element clips overflow. */
+.t-acc-panel {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel {
+	grid-template-rows: 1fr;
+	transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+}
+.t-acc-panel-inner {
+	overflow: hidden;
+	opacity: 0;
+	filter: blur(2px);
+	transition:
+		opacity var(--acc-collapse) var(--acc-ease),
+		filter var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel-inner {
+	opacity: 1;
+	filter: blur(0);
+	transition:
+		opacity var(--acc-expand) var(--acc-ease),
+		filter var(--acc-expand) var(--acc-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.t-acc-panel, .t-acc-panel-inner {
+		transition: none !important;
+	}
+}
+
+/* ── Page side-by-side (08), as a view transition ───────────────── */
+/* SvelteKit swaps whole pages, so the two pages are the view-transition snapshots
+   (+layout.svelte starts one). The index is page 1 and exits left; a problem is page 2
+   and exits right. */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: var(--page-slide-dur), var(--page-slide-dur), var(--page-fade-dur);
+	animation-timing-function: var(--page-slide-ease), var(--page-slide-ease), var(--page-fade-ease);
+	animation-fill-mode: both;
+}
+html[data-page-dir="forward"]::view-transition-old(root) { --t-page-to-x: calc(var(--page-slide-distance) * -1); }
+html[data-page-dir="forward"]::view-transition-new(root) { --t-page-from-x: var(--page-slide-distance); }
+html[data-page-dir="back"]::view-transition-old(root) { --t-page-to-x: var(--page-slide-distance); }
+html[data-page-dir="back"]::view-transition-new(root) { --t-page-from-x: calc(var(--page-slide-distance) * -1); }
+::view-transition-old(root) { animation-name: t-page-slide-out, t-page-blur-out, t-page-fade-out; }
+::view-transition-new(root) { animation-name: t-page-slide-in, t-page-blur-in, t-page-fade-in; }
+@keyframes t-page-slide-out { to { transform: translateX(var(--t-page-to-x, 0px)); } }
+@keyframes t-page-slide-in { from { transform: translateX(var(--t-page-from-x, 0px)); } }
+@keyframes t-page-blur-out { to { filter: blur(var(--page-blur)); } }
+@keyframes t-page-blur-in { from { filter: blur(var(--page-blur)); } }
+@keyframes t-page-fade-out { to { opacity: 0; } }
+@keyframes t-page-fade-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-old(root),
+	::view-transition-new(root) { animation: none !important; }
+}

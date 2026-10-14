@@ -56,6 +56,8 @@ class Solution(problem.Problem):
     number = 380
     title = "Insert Delete GetRandom O(1)"
     url = "https://leetcode.com/problems/insert-delete-getrandom-o1/"
+    difficulty = "Medium"
+    pattern = "Design · array + hash map"
     viz = "viz/src/routes/380/+page.svelte"
 
     def solve(

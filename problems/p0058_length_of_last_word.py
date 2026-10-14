@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 58
     title = "Length of Last Word"
     url = "https://leetcode.com/problems/length-of-last-word/"
+    difficulty = "Easy"
+    pattern = "Reverse scan · skip, then count"
     viz = "viz/src/routes/58/+page.svelte"
 
     def solve(self, s: str) -> int:

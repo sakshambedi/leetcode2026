@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { highlight } from '../highlight.ts';
+	import MorphText from './MorphText.svelte';
 
 	type Props = {
 		code: string;
@@ -24,7 +25,7 @@
 	<figcaption>
 		<span class="lang">{lang}</span>
 		{#if title}<span class="title">{title}</span>{/if}
-		<button type="button" onclick={copy} aria-label="Copy code">{copied ? 'Copied ✓' : 'Copy'}</button>
+		<button type="button" onclick={copy} aria-label="Copy code"><MorphText text={copied ? 'Copied ✓' : 'Copy'} /></button>
 	</figcaption>
 	<!-- tabindex: scrollable regions must be reachable by keyboard -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->

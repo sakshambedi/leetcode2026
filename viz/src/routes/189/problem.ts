@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Three reversals · in place',
 	lede: 'Reverse the whole array to bring the last k values to the front, then reverse each part back into order.'
 };
 

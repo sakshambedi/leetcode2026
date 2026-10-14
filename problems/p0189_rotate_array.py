@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 189
     title = "Rotate Array"
     url = "https://leetcode.com/problems/rotate-array/"
+    difficulty = "Medium"
+    pattern = "Three reversals · in place"
     viz = "viz/src/routes/189/+page.svelte"
 
     def solve(self, nums: list[int], k: int) -> list[int]:

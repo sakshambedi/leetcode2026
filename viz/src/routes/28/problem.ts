@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Sliding window · naive string matching',
 	lede: 'Lay the needle under the haystack at each start in turn and compare letter by letter: a full match returns the start, a mismatch slides it one to the right.'
 };
 

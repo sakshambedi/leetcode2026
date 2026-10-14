@@ -3,8 +3,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Greedy · BFS by levels',
 	lede: 'Cells reachable in k jumps form one window; scan it for the farthest next landing, and each time i hits the window’s end, count a jump and move end to far.'
 };
 

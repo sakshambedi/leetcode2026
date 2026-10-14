@@ -38,16 +38,39 @@ export type Problem<Args extends unknown[] = any[], Step extends BaseStep = any,
 	fits?: (args: Args) => boolean;
 };
 
-/** Shown in the page header and on the index. */
+/** Shown in the page header. Difficulty and pattern live on the Python Solution class (see ProblemInfo). */
 export type Meta = {
-	difficulty: 'Easy' | 'Medium' | 'Hard';
-	pattern: string;
 	/** One serif sentence that brings the whole approach back. */
 	lede: string;
 };
 
+export type Difficulty = 'Easy' | 'Medium' | 'Hard';
+
 /** Written by main.py from the Python Solution classes. */
-export type ProblemInfo = { number: number; title: string; url: string; stem: string };
+export type ProblemInfo = {
+	number: number;
+	title: string;
+	url: string;
+	stem: string;
+	difficulty: Difficulty;
+	/** "Family · detail"; the index filters by the family before " · ". */
+	pattern: string;
+	/** Section in the study plan, or null when the problem is not in it. */
+	section: string | null;
+};
+
+/** The study plan, as `uv run leetcode.py plan <slug>` fetched it; copied by main.py. */
+export type StudyPlan = {
+	slug: string;
+	name: string;
+	url: string;
+	sections: {
+		name: string;
+		problems: { number: number; title: string; slug: string; difficulty: Difficulty }[];
+	}[];
+};
+
+export const patternFamily = (pattern: string) => pattern.split(' · ')[0];
 
 export function defaultFits(args: unknown[]) {
 	const lists = args.filter(Array.isArray) as unknown[][];

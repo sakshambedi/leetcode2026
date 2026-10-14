@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 169
     title = "Majority Element"
     url = "https://leetcode.com/problems/majority-element/"
+    difficulty = "Easy"
+    pattern = "Boyer–Moore voting · one pass"
     viz = "viz/src/routes/169/+page.svelte"
 
     def solve(self, nums: list[int]) -> int:

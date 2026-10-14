@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Greedy · reset the start',
 	lede: 'If the tank runs dry at station i, no station from start to i can be the start, so restart at i + 1; a start exists exactly when total gas covers total cost.'
 };
 

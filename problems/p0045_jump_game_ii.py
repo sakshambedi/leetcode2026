@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 45
     title = "Jump Game II"
     url = "https://leetcode.com/problems/jump-game-ii/"
+    difficulty = "Medium"
+    pattern = "Greedy · BFS by levels"
     viz = "viz/src/routes/45/+page.svelte"
 
     def solve(self, nums: list[int]) -> int:

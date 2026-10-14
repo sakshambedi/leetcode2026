@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Hard',
-	pattern: 'Greedy packing · simulation',
 	lede: 'Pack each line with as many words as fit with single spaces, then spread the spare spaces over the gaps, extra ones to the left; the last line and one-word lines stay left-justified.'
 };
 

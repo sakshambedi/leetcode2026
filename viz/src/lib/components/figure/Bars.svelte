@@ -11,10 +11,9 @@
 	// top of a column as a translucent, dash-edged block: a distinct physical state, not a bar.
 	// A zero-height column lies flat as a dashed slot, so the ground still reads.
 	// Place a Bars row behind (smaller y than) any row drawn in front of it: columns rise up the screen.
-	import { Tween, prefersReducedMotion } from 'svelte/motion';
-	import { cubicOut } from 'svelte/easing';
+	import { Tween } from 'svelte/motion';
 	import { path, solid } from '../../iso.ts';
-	import { TILE, getCamera, lerpList } from './context.ts';
+	import { HEIGHT_TWEEN, TILE, getCamera } from './context.ts';
 	import Halo from './Halo.svelte';
 	import Tile from './Tile.svelte';
 	import Slot from './Slot.svelte';
@@ -57,9 +56,8 @@
 	const cx = (i: number) => (i + offset) * P + T / 2;
 
 	// Columns and fills rise and fall between steps; lerpList lets the column count change too.
-	const motion = { duration: () => (prefersReducedMotion.current ? 0 : 320), easing: cubicOut, interpolate: lerpList };
-	const bars = Tween.of(() => values.map((v) => v * unit), motion);
-	const fills = Tween.of(() => values.map((_, i) => (fill[i] ?? 0) * unit), motion);
+	const bars = Tween.of(() => values.map((v) => v * unit), HEIGHT_TWEEN);
+	const fills = Tween.of(() => values.map((_, i) => (fill[i] ?? 0) * unit), HEIGHT_TWEEN);
 
 	// A seam across the front face at each whole unit, so the stack reads as blocks.
 	const seams = (i: number, h: number) => {

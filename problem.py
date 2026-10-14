@@ -21,6 +21,10 @@ class Problem(ABC):
     number: ClassVar[int]
     title: ClassVar[str]
     url: ClassVar[str] = ""
+    difficulty: ClassVar[str] = ""  # "Easy" | "Medium" | "Hard", as on LeetCode
+    pattern: ClassVar[str] = (
+        ""  # "Family · detail"; the family before " · " is what the filters group by
+    )
     viz: ClassVar[str | None] = None  # the SvelteKit route page, relative to repo root
 
     @abstractmethod
@@ -38,6 +42,5 @@ def as_params(examples: list[Example]) -> list[Any]:
     import pytest
 
     return [
-        pytest.param(*ex.args, ex.expected, id=f"example_{i}")
-        for i, ex in enumerate(examples, 1)
+        pytest.param(*ex.args, ex.expected, id=f"example_{i}") for i, ex in enumerate(examples, 1)
     ]

@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 28
     title = "Find the Index of the First Occurrence in a String"
     url = "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/"
+    difficulty = "Easy"
+    pattern = "Sliding window · naive string matching"
     viz = "viz/src/routes/28/+page.svelte"
 
     def solve(self, haystack: str, needle: str) -> int:

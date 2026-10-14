@@ -75,7 +75,10 @@ code { font: 13px var(--anatomy-mono); color: var(--anatomy-strong); }
 	min-height: 34px; padding: 0 12px; border-radius: 6px; cursor: pointer;
 	font: 11px var(--anatomy-mono); letter-spacing: 0.08em; text-transform: uppercase;
 	color: var(--anatomy-strong); background: var(--anatomy-card); border: 1px solid var(--anatomy-faint);
-	transition: background 0.15s, border-color 0.15s, color 0.15s;
+	transition:
+		background var(--duration-quick) var(--ease-smooth-out),
+		border-color var(--duration-quick) var(--ease-smooth-out),
+		color var(--duration-quick) var(--ease-smooth-out);
 }
 .btn:hover:not(:disabled) { border-color: var(--anatomy-mid); }
 .btn:active:not(:disabled) { transform: translateY(1px); }

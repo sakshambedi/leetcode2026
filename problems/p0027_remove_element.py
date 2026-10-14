@@ -17,6 +17,8 @@ class Solution(problem.Problem):
     number = 27
     title = "Remove Element"
     url = "https://leetcode.com/problems/remove-element/"
+    difficulty = "Easy"
+    pattern = "Two pointers · in place"
     viz = "viz/src/routes/27/+page.svelte"
 
     def solve(self, nums: list[int], val: int) -> tuple[int, list[int]]:

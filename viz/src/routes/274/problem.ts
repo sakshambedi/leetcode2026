@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Medium',
-	pattern: 'Sort · walk the ranks',
 	lede: 'Sort citations high to low; the paper at rank h + 1 must have at least h + 1 citations, so step h until one falls short.'
 };
 

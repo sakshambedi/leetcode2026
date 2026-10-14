@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 80
     title = "Remove Duplicates from Sorted Array II"
     url = "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/"
+    difficulty = "Medium"
+    pattern = "Two pointers · in place"
     viz = "viz/src/routes/80/+page.svelte"
 
     def solve(self, nums: list[int]) -> tuple[int, list[int]]:

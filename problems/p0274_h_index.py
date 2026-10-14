@@ -18,6 +18,8 @@ class Solution(problem.Problem):
     number = 274
     title = "H-Index"
     url = "https://leetcode.com/problems/h-index/"
+    difficulty = "Medium"
+    pattern = "Sort · walk the ranks"
     viz = "viz/src/routes/274/+page.svelte"
 
     def solve(self, citations: list[int]) -> int:

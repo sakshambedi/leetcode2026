@@ -2,8 +2,6 @@
 import type { BaseStep, Meta, Problem } from '#lib/types.ts';
 
 export const meta: Meta = {
-	difficulty: 'Easy',
-	pattern: 'Boyer–Moore voting · one pass',
 	lede: 'Let each different value cancel one vote for the candidate; the majority has more than half the votes, so it is the one left standing.'
 };
 

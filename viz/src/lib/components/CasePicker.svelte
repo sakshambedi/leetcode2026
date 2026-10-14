@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { shake } from '../transitions.ts';
 	import { defaultFits, fmt, type Case, type Field, type Problem } from '../types.ts';
 
 	type Props = {
@@ -38,6 +39,8 @@
 
 	let values = $state<Record<string, string>>({});
 	let error = $state('');
+	/** The message stays in place while it fades out, so this flag, not `error`, shows it. */
+	let failed = $state(false);
 	let invalid = $state<string | null>(null);
 	let chips: HTMLButtonElement[] = $state([]);
 	let inputs: HTMLInputElement[] = $state([]);
@@ -50,6 +53,7 @@
 				problem.fields.map((f) => [f.name, current ? prefill(f, f.from(current as any)) : ''])
 			);
 			error = '';
+			failed = false;
 			invalid = null;
 			if (focus) tick().then(() => inputs[0]?.focus());
 		} else {
@@ -104,10 +108,22 @@
 			const args = problem.toArgs(parsed);
 			if (!fits(args)) throw new Error('Too big to draw. Keep lists to 12 values or fewer, each under 1000, and strings short.');
 			error = '';
+			failed = false;
 			onpick(args, undefined, 'Custom input');
 		} catch (err) {
 			error = (err as Error).message;
+			failed = true;
+			// Shake the field that failed to parse, or every field when the inputs break the problem's rules.
+			const i = problem.fields.findIndex((f) => f.name === invalid);
+			shake(i >= 0 ? [inputs[i]] : inputs);
 		}
+	}
+
+	// Typing clears the error, so nothing is shaking at a value already being corrected.
+	// The message fades out but keeps its line until the next run, so the form does not jump.
+	function edited() {
+		failed = false;
+		invalid = null;
 	}
 </script>
 
@@ -140,20 +156,26 @@
 		</div>
 	</div>
 
-	{#if selected === 'custom'}
-		<form class="custom" onsubmit={run} novalidate>
-			{#each problem.fields as f, n}
-				<label class="field">
-					<span>{f.name}</span>
-					<input bind:this={inputs[n]} bind:value={values[f.name]} placeholder={f.placeholder}
-						aria-invalid={invalid === f.name || undefined} autocomplete="off" spellcheck="false"
-						inputmode={f.kind === 'int' ? 'numeric' : 'text'} />
-				</label>
-			{/each}
-			<button type="submit" class="btn primary">Run</button>
-			{#if error}<p class="error" role="alert">{error}</p>{/if}
-		</form>
-	{/if}
+	<!-- Accordion expand: the form stays mounted and grows open; inert keeps it out of reach while closed. -->
+	<div class="t-acc" data-open={selected === 'custom'}>
+		<div class="t-acc-panel" inert={selected !== 'custom'}>
+			<div class="t-acc-panel-inner">
+				<form class="custom t-input-wrap" class:is-error={failed} onsubmit={run} novalidate>
+					{#each problem.fields as f, n}
+						<label class="field">
+							<span>{f.name}</span>
+							<input class="t-input" class:is-error={failed && invalid === f.name} bind:this={inputs[n]}
+								bind:value={values[f.name]} oninput={edited} placeholder={f.placeholder}
+								aria-invalid={(failed && invalid === f.name) || undefined} autocomplete="off" spellcheck="false"
+								inputmode={f.kind === 'int' ? 'numeric' : 'text'} />
+						</label>
+					{/each}
+					<button type="submit" class="btn primary">Run</button>
+					<p class="error t-error-msg" role="alert">{error}</p>
+				</form>
+			</div>
+		</div>
+	</div>
 </section>
 
 <style>
@@ -170,13 +192,16 @@
 	.chip {
 		min-height: 30px; padding: 0 12px; border-radius: 99px; cursor: pointer;
 		font: 12px var(--font-sans); color: var(--anatomy-text);
-		background: transparent; border: 1px solid var(--anatomy-faint); transition: all 0.15s;
+		background: transparent; border: 1px solid var(--anatomy-faint);
+		transition: border-color var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out);
 	}
 	.chip:hover { border-color: var(--anatomy-mid); color: var(--anatomy-strong); }
 	.chip[aria-checked='true'] { background: var(--anatomy-strong); border-color: var(--anatomy-strong); color: var(--anatomy-card); }
 	.custom { border-style: dashed; }
 	.chip.custom[aria-checked='true'] { border-style: solid; }
 
+	/* Padding on the inner panel (never the grid track) keeps focus rings and the shake from being clipped. */
+	.t-acc-panel-inner { padding: 8px; margin: -8px; }
 	form.custom { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin: 14px 0 0 192px; border: 0; }
 	.field { display: grid; gap: 4px; }
 	.field span { font: 11px var(--anatomy-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--anatomy-muted); }
@@ -189,6 +214,7 @@
 	input::placeholder { color: var(--anatomy-lo); }
 	input[aria-invalid='true'] { border-color: var(--anatomy-red); }
 	.error { flex-basis: 100%; margin: 0; font-size: 13px; color: var(--anatomy-red); }
+	.error:empty { display: none; }
 
 	@media (max-width: 640px) {
 		.group { grid-template-columns: 1fr; gap: 6px; }
