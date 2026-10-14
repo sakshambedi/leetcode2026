@@ -35,7 +35,7 @@ class Solution(problem.Problem):
         Returns:
             The number of characters in the last word.
         """
-        return len(s.rstrip().rsplit(" ", 1)[-1])
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 58`

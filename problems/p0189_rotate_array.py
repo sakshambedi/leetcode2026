@@ -36,10 +36,7 @@ class Solution(problem.Problem):
         Returns:
             None; nums itself holds the rotated values.
         """
-        k %= len(nums)
-        nums.reverse()
-        nums[:k] = reversed(nums[:k])
-        nums[k:] = reversed(nums[k:])
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 189`
@@ -63,7 +60,9 @@ CASES = [
     pytest.param([1, 2, 3, 4, 5, 6], 3, [4, 5, 6, 1, 2, 3], id="k_half_of_n"),
     pytest.param([1, 2, 3], 100000, [3, 1, 2], id="k_maximum_small_array"),
     pytest.param([7, 7, 7, 7], 3, [7, 7, 7, 7], id="every_value_the_same"),
-    pytest.param([-(2**31), 0, 2**31 - 1], 1, [2**31 - 1, -(2**31), 0], id="value_bounds"),
+    pytest.param(
+        [-(2**31), 0, 2**31 - 1], 1, [2**31 - 1, -(2**31), 0], id="value_bounds"
+    ),
     pytest.param(
         list(range(100000)),
         99999,

@@ -35,8 +35,7 @@ class Solution(problem.Problem):
         Returns:
             The largest h such that at least h papers have at least h citations each.
         """
-        citations.sort(reverse=True)
-        return sum(citation >= rank for rank, citation in enumerate(citations, 1))
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 274`
@@ -62,7 +61,9 @@ CASES = [
     pytest.param([1000] * 5, 5, id="citation_upper_bound"),
     pytest.param([0] * 5000, 0, id="maximum_size_all_zero"),
     pytest.param([1000] * 5000, 1000, id="maximum_size_capped_by_citations"),
-    pytest.param([i % 1001 for i in range(5000)], 833, id="maximum_size_full_value_range"),
+    pytest.param(
+        [i % 1001 for i in range(5000)], 833, id="maximum_size_full_value_range"
+    ),
 ]
 
 

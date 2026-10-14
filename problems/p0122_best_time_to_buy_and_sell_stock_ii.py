@@ -35,9 +35,7 @@ class Solution(problem.Problem):
         Returns:
             The maximum total profit; 0 if prices never rise.
         """
-        return sum(
-            max(0, today - yesterday) for yesterday, today in zip(prices, prices[1:], strict=False)
-        )
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 122`

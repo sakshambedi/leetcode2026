@@ -35,12 +35,7 @@ class Solution(problem.Problem):
         Returns:
             True if some sequence of jumps lands on the last index, else False.
         """
-        reach = 0
-        for i, distance in enumerate(nums):
-            if i > reach:
-                return False
-            reach = max(reach, i + distance)
-        return True
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 55`

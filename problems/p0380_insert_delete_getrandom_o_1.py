@@ -7,7 +7,6 @@ Viz: viz/src/routes/380/  (uv run main.py 380 --viz)
 """
 
 import copy
-import random
 
 import pytest
 
@@ -20,7 +19,7 @@ class RandomizedSet:
 
     def __init__(self):
         """Create an empty set."""
-        self.values, self.indices = [], {}
+        raise NotImplementedError  # your solution
 
     def insert(self, val: int) -> bool:
         """Add ``val`` if it is not in the set yet.
@@ -31,11 +30,7 @@ class RandomizedSet:
         Returns:
             True if ``val`` was added, False if it was already present.
         """
-        if val in self.indices:
-            return False
-        self.indices[val] = len(self.values)
-        self.values.append(val)
-        return True
+        raise NotImplementedError  # your solution
 
     def remove(self, val: int) -> bool:
         """Remove ``val`` if it is in the set.
@@ -46,14 +41,7 @@ class RandomizedSet:
         Returns:
             True if ``val`` was present and removed, False otherwise.
         """
-        if val not in self.indices:
-            return False
-        index = self.indices.pop(val)
-        last = self.values.pop()
-        if index < len(self.values):
-            self.values[index] = last
-            self.indices[last] = index
-        return True
+        raise NotImplementedError  # your solution
 
     def getRandom(self) -> int:
         """Pick a value from the set, each with the same probability.
@@ -61,7 +49,7 @@ class RandomizedSet:
         Returns:
             One of the current values. The set is never empty when this is called.
         """
-        return random.choice(self.values)
+        raise NotImplementedError  # your solution
 
 
 class Solution(problem.Problem):
@@ -72,7 +60,9 @@ class Solution(problem.Problem):
     pattern = "Design · array + hash map"
     viz = "viz/src/routes/380/+page.svelte"
 
-    def solve(self, operations: list[str], values: list[list[int]]) -> list[bool | int | None]:
+    def solve(
+        self, operations: list[str], values: list[list[int]]
+    ) -> list[bool | int | None]:
         """Replay LeetCode's call list; the constructor's output is None."""
         rs = None
         out: list[bool | int | None] = []

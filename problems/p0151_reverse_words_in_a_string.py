@@ -36,7 +36,7 @@ class Solution(problem.Problem):
             The words last to first, separated by exactly one space, with no
             leading or trailing spaces.
         """
-        return " ".join(reversed(s.split()))
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 151`

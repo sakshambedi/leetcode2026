@@ -35,12 +35,7 @@ class Solution(problem.Problem):
         Returns:
             k, the length of the result; it ends up in ``nums[:k]``.
         """
-        write = 0
-        for value in nums:
-            if write < 2 or value != nums[write - 2]:
-                nums[write] = value
-                write += 1
-        return write
+        raise NotImplementedError  # your solution
 
 
 # Examples from the problem statement: `uv run main.py 80`
