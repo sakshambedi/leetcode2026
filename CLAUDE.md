@@ -80,6 +80,7 @@ The goal is recall: opening the viz weeks later should bring the approach back i
 - Reuse the shared components. A route should contain only problem-specific logic (`problem.ts`) and markup (`+page.svelte`).
   If two problems need the same drawing, add a component to `src/lib/components/figure/` rather than copying it.
 - No new runtime dependencies or CDNs. Style with the `--anatomy-*` tokens in scoped `<style>` blocks.
+  The one exception is `thinking-orbs` (MIT), whose React-free `thinking-orbs/engine` animates the tab icon (`src/lib/favicon.ts`).
 
 ### problem.ts
 - `meta`: `lede`, one sentence that gives the whole idea. (Difficulty and pattern come from the Python class.)

@@ -1,12 +1,18 @@
 <script lang="ts">
 	import '../app.css';
 	import '#lib/transitions.css';
-	import favicon from '#lib/assets/favicon.svg';
+	import favicon from '#lib/assets/orb.svg';
 	import { onNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { prefersReducedMotion } from 'svelte/motion';
+	import { animateFavicon } from '#lib/favicon.ts';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
+
+	// The static orb in <head> is the first paint; from here the tab icon moves.
+	let icon: HTMLLinkElement;
+	onMount(() => animateFavicon(icon));
 
 	// Page side-by-side between the index and a problem, as a view transition: the index exits
 	// left when a problem opens, and the problem exits right on the way back.
@@ -24,7 +30,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href={favicon} bind:this={icon} />
 </svelte:head>
 
 {@render children()}
