@@ -1,0 +1,58 @@
+# Build the viz app and publish it to GitHub Pages on every push to main.
+name: Deploy viz to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Regenerate viz/src/lib/generated from the Python problem files.
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run python -c "import main; main.export_all()"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: viz/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: viz
+      - run: pnpm test
+        working-directory: viz
+      - run: pnpm build
+        working-directory: viz
+        env:
+          # Project pages live at https://<user>.github.io/<repo>/
+          BASE_PATH: /${{ github.event.repository.name }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: viz/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

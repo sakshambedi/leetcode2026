@@ -1,0 +1,41 @@
+"""{{NUMBER}}. {{TITLE}}
+
+Pattern: TODO
+Recall: TODO, the one idea that unlocks the solution.
+Viz: viz/src/routes/{{NUMBER}}/  (uv run main.py {{NUMBER}} --viz)
+"""
+
+import copy
+
+import pytest
+
+import problem
+from problem import example
+
+
+class Solution(problem.Problem):
+    number = {{NUMBER}}
+    title = "{{TITLE}}"
+    url = "https://leetcode.com/problems/{{SLUG}}/"
+    viz = "viz/src/routes/{{NUMBER}}/+page.svelte"
+
+{{METHODS}}
+
+# Examples from the problem statement: `uv run main.py {{NUMBER}}`
+EXAMPLES = [
+    # example(arg1, arg2, expected=...),
+]
+
+# Edge cases on top of the examples: `uv run main.py {{NUMBER}} --test`
+CASES = [
+    # pytest.param(arg1, arg2, expected, id="edge_case_name"),
+]
+
+
+@pytest.mark.parametrize("args, expected", [
+    pytest.param(p.values[:-1], p.values[-1], id=p.id)
+    for p in problem.as_params(EXAMPLES) + CASES
+])
+def test_solve(args, expected):
+    solution = Solution()
+    assert solution.check(solution.solve(*copy.deepcopy(args)), expected)

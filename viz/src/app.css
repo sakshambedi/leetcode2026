@@ -1,0 +1,86 @@
+/* Design tokens after Anatomy (skills.wheresryan.sh/anatomy), values from the anatomy-figures themes.
+   Switch with <html data-theme="...">; components read only these variables. */
+
+:root,
+html[data-theme='light'] {
+	--anatomy-card: #fafafa; --anatomy-face: #ffffff; --anatomy-top: #ffffff;
+	--anatomy-shade-0: #dcdcd9; --anatomy-shade-1: #e5e5e2; --anatomy-shade-2: #ededea; --anatomy-shade-3: #f4f4f1;
+	--anatomy-lit: #000000; --anatomy-lit-top: #ffffff; --anatomy-lit-shade: #eeeeeb;
+	--anatomy-hi: #26262a; --anatomy-mid: #8a8a8f; --anatomy-lo: #b4b4b8; --anatomy-faint: #d4d4d6;
+	--anatomy-dot: #e6e6e6; --anatomy-halo: #8a8a80; --anatomy-halo-opacity: 0.32;
+	--anatomy-text: #57575a; --anatomy-strong: #18181a; --anatomy-muted: #8c8c90;
+	--anatomy-red: #e5484d; --anatomy-green: #30a46c; --anatomy-blue: #3e63dd;
+	--ground: #fafafa; --rule: #ebebeb; --well: #f1f1f1;
+}
+html[data-theme='dark'] {
+	--anatomy-card: #131313; --anatomy-face: #1b1b1b; --anatomy-top: #1c1c1c;
+	--anatomy-shade-0: #0f0f0f; --anatomy-shade-1: #121212; --anatomy-shade-2: #151515; --anatomy-shade-3: #181818;
+	--anatomy-lit: #ffffff; --anatomy-lit-top: #262626; --anatomy-lit-shade: #1d1d1d;
+	--anatomy-hi: #d4d4d4; --anatomy-mid: #6a6a6a; --anatomy-lo: #3e3e3e; --anatomy-faint: #2a2a2a;
+	--anatomy-dot: #2a2a2e; --anatomy-halo: #050505; --anatomy-halo-opacity: 0.9;
+	--anatomy-text: #a3a3a3; --anatomy-strong: #e6e6e6; --anatomy-muted: #6e6e6e;
+	--anatomy-red: #ff6b6b; --anatomy-green: #6be0a0; --anatomy-blue: #6b9bff;
+	--ground: #0c0c0c; --rule: #222222; --well: #181818;
+}
+html[data-theme='paper'] {
+	--anatomy-card: #dfdfd8; --anatomy-face: #f3f3ee; --anatomy-top: #f6f6f2;
+	--anatomy-shade-0: #c6c6be; --anatomy-shade-1: #d0d0c9; --anatomy-shade-2: #dadad3; --anatomy-shade-3: #e4e4de;
+	--anatomy-lit: #000000; --anatomy-lit-top: #fafaf7; --anatomy-lit-shade: #e6e6e0;
+	--anatomy-hi: #1f1f1d; --anatomy-mid: #7c7c75; --anatomy-lo: #a2a29a; --anatomy-faint: #c2c2ba;
+	--anatomy-text: #3d3d39; --anatomy-strong: #1b1b19; --anatomy-muted: #66665f;
+	--ground: #e8e8e2; --rule: #d2d2ca; --well: #d6d6cf;
+}
+html[data-theme='blueprint'] {
+	--anatomy-card: #1f3f73; --anatomy-face: #26497f; --anatomy-top: #294d85;
+	--anatomy-shade-0: #1a3563; --anatomy-shade-1: #1d3a6b; --anatomy-shade-2: #204073; --anatomy-shade-3: #23457b;
+	--anatomy-lit: #ffffff; --anatomy-lit-top: #335a96; --anatomy-lit-shade: #2a4f89;
+	--anatomy-hi: #e8f0ff; --anatomy-mid: #8fa8d1; --anatomy-lo: #5a77a6; --anatomy-faint: #3b5a8a;
+	--anatomy-dot: #3b5a8a; --anatomy-halo: #0b1a33; --anatomy-halo-opacity: 0.9;
+	--anatomy-text: #b8c8e6; --anatomy-strong: #ffffff; --anatomy-muted: #7f96bf;
+	--anatomy-red: #ff6b6b; --anatomy-green: #6be0a0; --anatomy-blue: #9fc2ff;
+	--ground: #1a3666; --rule: #2c4f86; --well: #1a3666;
+}
+html[data-theme='sepia'] {
+	--anatomy-card: #efe4cf; --anatomy-face: #faf3e6; --anatomy-top: #fdf8ee;
+	--anatomy-shade-0: #d9c7a6; --anatomy-shade-1: #e2d2b4; --anatomy-shade-2: #e9dcc2; --anatomy-shade-3: #f0e6d1;
+	--anatomy-lit: #7a2e0e; --anatomy-lit-top: #fffaf0; --anatomy-lit-shade: #f3ead8;
+	--anatomy-hi: #3b2a17; --anatomy-mid: #8c7356; --anatomy-lo: #b9a17f; --anatomy-faint: #d8c6a6;
+	--anatomy-dot: #d8c6a6; --anatomy-halo: #8c7356;
+	--anatomy-text: #6b5940; --anatomy-strong: #2b1d0e; --anatomy-muted: #9a8668;
+	--ground: #f5ecdb; --rule: #e2d2b4; --well: #e9dcc2;
+}
+
+:root {
+	--anatomy-paper: var(--anatomy-card);
+	--anatomy-weight: 0.6px;
+	--anatomy-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+	--font-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-serif: 'EB Garamond', 'Iowan Old Style', Palatino, Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+body {
+	margin: 0; background: var(--ground); color: var(--anatomy-text);
+	font: 15px/1.6 var(--font-sans); -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--anatomy-lo); text-underline-offset: 3px; }
+code { font: 13px var(--anatomy-mono); color: var(--anatomy-strong); }
+.muted { color: var(--anatomy-muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+:is(button, input, a, [tabindex]):focus-visible { outline: 2px solid var(--anatomy-blue); outline-offset: 2px; }
+
+/* Buttons shared by the picker and the playback bar */
+.btn {
+	display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+	min-height: 34px; padding: 0 12px; border-radius: 6px; cursor: pointer;
+	font: 11px var(--anatomy-mono); letter-spacing: 0.08em; text-transform: uppercase;
+	color: var(--anatomy-strong); background: var(--anatomy-card); border: 1px solid var(--anatomy-faint);
+	transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn:hover:not(:disabled) { border-color: var(--anatomy-mid); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { color: var(--anatomy-lo); border-color: var(--rule); cursor: not-allowed; }
+.btn.primary { background: var(--anatomy-strong); border-color: var(--anatomy-strong); color: var(--anatomy-card); }
+.btn.primary:hover:not(:disabled) { background: var(--anatomy-hi); border-color: var(--anatomy-hi); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

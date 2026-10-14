@@ -1,0 +1,30 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      anatomy-figures:
+        specifier: ^0.1.0
+        version: 0.1.0
+
+packages:
+
+  anatomy-figures@0.1.0:
+    resolution: {integrity: sha512-C+rpbxXi0m3fhkpevPcoFH0f7y4UFwbfQtFX/4D1J3S2oRZjKSMJN4ODQUS+46AzkrW8srM3wyO3vyF7FPEbtQ==}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
+snapshots:
+
+  anatomy-figures@0.1.0: {}

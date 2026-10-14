@@ -1,0 +1,35 @@
+// {{NUMBER}}. {{TITLE}}
+import type { BaseStep, Meta, Problem } from '#lib/types.ts';
+
+export const meta: Meta = {
+	difficulty: '{{DIFFICULTY}}',
+	pattern: 'TODO pattern',
+	lede: 'TODO: the one sentence that brings the whole approach back.'
+};
+
+// Same shape as the Python solve() arguments.
+type Args = [nums: number[]];
+export type Step = BaseStep & {
+	a: number[];
+	i: number;
+	lit: number | null;
+	done?: boolean;
+};
+
+export const problem: Problem<Args, Step, number[]> = {
+	fields: [{ name: 'nums', kind: 'list', from: ([nums]) => nums, placeholder: '1, 2, 3' }],
+	toArgs: ({ nums }) => [nums], // throw new Error('...') to reject invalid input
+
+	// One snapshot per step: the state to draw, why the move happens, and the code line it runs.
+	trace([nums]) {
+		const a = [...nums];
+		const out: Step[] = [{ a: [...a], i: 0, lit: null, line: 1, msg: 'TODO: describe the starting state.' }];
+		out.push({ ...out.at(-1)!, done: true, msg: 'TODO: describe the answer.' });
+		return out;
+	},
+
+	vars: (s) => [{ name: 'i', value: s.i, note: 'TODO what i means' }],
+
+	result: (s) => s.a
+	// check: (result, expected) => ..., // when any valid answer is accepted
+};

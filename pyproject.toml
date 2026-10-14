@@ -1,0 +1,46 @@
+[project]
+name = "leetcode2026"
+version = "0.1.0"
+description = "LeetCode solutions with pytest suites"
+requires-python = ">=3.14"
+dependencies = [
+    "pytest>=9.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["problems"]
+python_files = ["p[0-9]*.py"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+extend-exclude = ["viz"]
+
+[tool.ruff.format]
+# Format ```python examples inside docstrings too.
+docstring-code-format = true
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, import order, modern syntax, bugbear, docstring style.
+select = ["E", "F", "I", "UP", "B", "D"]
+# Docstrings are optional (D1xx), but the ones written follow Google style,
+# which editor hovers render as Args / Returns sections. The formatter owns line length (E501).
+ignore = ["D1", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Problem docstrings open with a "N. Title" line, not a sentence.
+"problems/*" = ["D415"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

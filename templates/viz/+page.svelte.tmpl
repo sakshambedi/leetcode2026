@@ -1,0 +1,33 @@
+<script lang="ts">
+	import ProblemPage from '#lib/components/ProblemPage.svelte';
+	import Figure from '#lib/components/figure/Figure.svelte';
+	import ArrayRow from '#lib/components/figure/ArrayRow.svelte';
+	import { TILE } from '#lib/components/figure/context.ts';
+	import cases from '#lib/generated/cases/{{STEM}}.json';
+	import { meta, problem, type Step } from './problem.ts';
+
+	const { size: T, pitch: P, height: H } = TILE;
+
+	const code = `
+# the core loop, as you would write it from memory`;
+</script>
+
+<ProblemPage number={ {{NUMBER}} } {meta} {problem} {cases} {code}>
+	{#snippet figure(s: Step)}
+		{@const W = Math.max(s.a.length, 1) * P}
+		<Figure label="TODO describe the figure"
+			bounds={[[-50, -10, H + 6], [W + 10, -10, H + 6], [-50, T + 34], [W + 10, T + 34]]}
+			dots={{ x0: -8, y0: -8, x1: W, y1: T + 8 }}>
+			<ArrayRow values={s.a} name="nums" lit={s.lit} pointers={{ i: s.i }} />
+		</Figure>
+	{/snippet}
+
+	{#snippet recall()}
+		<dt>Key insight</dt><dd>TODO</dd>
+		<dt>Invariant</dt><dd>TODO: what stays true after every step.</dd>
+		<dt>Each step</dt><dd>TODO</dd>
+		<dt>Stop when</dt><dd>TODO: loop condition or base case.</dd>
+		<dt>Pitfall</dt><dd>TODO</dd>
+		<dt>Cost</dt><dd>TODO time, TODO space.</dd>
+	{/snippet}
+</ProblemPage>
