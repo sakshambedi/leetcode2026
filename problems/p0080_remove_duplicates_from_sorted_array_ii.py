@@ -35,7 +35,10 @@ class Solution(problem.Problem):
         Returns:
             k, the length of the result; it ends up in ``nums[:k]``.
         """
-        raise NotImplementedError  # your solution
+        if len(nums) <= 1:
+            return len(nums)
+
+        return 1
 
 
 # Examples from the problem statement: `uv run main.py 80`
